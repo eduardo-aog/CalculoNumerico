@@ -4,7 +4,10 @@ from Helpers.ConsultMain import ConsultMain
 def Main():
 # Inicializacion
     values = [[20.7,70.3,90.8],[18,30.7,10.1],[60,60.33,10.8],[80,600,30.123]]  
-    
+    def hola():
+        print("Hola, bienvenido al programa de calculo de errores")
+        
+        
 # Proceso
     measuredValue, realValue, absoluteError, relativeError = ProcessMain(values)    
     
