@@ -11,7 +11,7 @@ class ElementalOperations:
             raise AttributeError("Valor nulo no permitido")
         if not self.__utilValNegativeFormat(num):
             raise AttributeError("Valor negativo con formato no permitido")
-        if not self.__utilValFracFormat(num):
+        if not self.__utilValFractionFormat(num):
             raise AttributeError("Valor de fracción con formato no permitido")
         self.__num = num
 
@@ -24,48 +24,46 @@ class ElementalOperations:
             raise AttributeError("Valor no permitido, no es un número")
         self.__op = op
 
-    #Verificar la suma con el número que llegue
-
     def __utilOpBin(self, num, op):
-        specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨*"
         for i in num:
             if i not in "01":
                 return op
-            if i.lower() in specialChars:
-                raise AttributeError("Valor no permitido, no es un número")
-            
+            if self.__utilCheckSpecialChar(i):
+                return ""
         res = self.__utilBinToDec(num)
         if not self.__utilCheckSum(res):
-            raise AttributeError("Valor no permitido, no pertenece a un sistema númerico")
+            return ""
         
-        return "+, -, *, /, ^, '+'"
+        return "+, -, *, /, ^, ''+''"
 
     def __utilOpDec(self, num, op):
-        specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨*"
         for i in num:
-            if i not in "0123456789":
+            if i not in "-,.0123456789":
                 return op
-            if i.lower() in specialChars:
-                raise AttributeError("Valor no permitido, no es un número")
-            
+            if self.__utilCheckSpecialChar(i):
+                return ""
         if not self.__utilCheckSum(num):
-            raise AttributeError("Valor no permitido, no pertenece a un sistema númerico")   
+            return ""   
         
-        return "+, -, *, /, ^, '+'"
+        return "+, -, *, /, ^, ''+''"
 
     def __utilOpHex(self, num, op):
-        specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨*"
         for i in num:
             if i.lower() not in "0123456789abcdef":
                 return op
-            if i.lower() in specialChars:
-                raise AttributeError("Valor no permitido, no es un número")
-            
+            if self.__utilCheckSpecialChar(i):
+                return ""
         res = self.__utilHexToDec(num)
         if not self.__utilCheckSum(res):
-            raise AttributeError("Valor no permitido, no pertenece a un sistema númerico")
+            return ""
 
-        return "+, -, *, /, ^, '+'"
+        return "+, -, *, /, ^, ''+''"
+    
+    def __utilCheckSpecialChar(n):
+        specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨*"
+        if n.lower() in specialChars:
+            return True
+        return False
     
     def __utilBinToDec(num):
         n = 0
@@ -82,7 +80,7 @@ class ElementalOperations:
         for i in reversed(num):
             for j in range(len(hexa)):
                 if i.lower() == hexa[j]:
-                    comp += 16**n * (j+1)
+                    comp += 16**n * j
             n += 1
         return comp
     
@@ -102,7 +100,7 @@ class ElementalOperations:
             n += 1
         return True
 
-    def __utilValFracFormat(self, num):
+    def __utilValFractionFormat(self, num):
         n = 0
         for i in num:
             if "," in num and (n == 0 and i == ","):

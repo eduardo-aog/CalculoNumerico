@@ -32,7 +32,7 @@ class NumBases:
 
     def __utilValDec(self, num, base):
         for i in num:
-            if i not in "0123456789":
+            if i not in "-,.0123456789":
                 return base
         return "Decimal/"+base
 
