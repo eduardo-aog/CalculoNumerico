@@ -24,23 +24,73 @@ class ElementalOperations:
             raise AttributeError("Valor no permitido, no es un número")
         self.__op = op
 
+    #Verificar la suma con el número que llegue
+
     def __utilOpBin(self, num, op):
+        specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨*"
         for i in num:
             if i not in "01":
                 return op
-        return "+, -, *, /, and, or, not, ^, '+'"
+            if i.lower() in specialChars:
+                raise AttributeError("Valor no permitido, no es un número")
+            
+        res = self.__utilBinToDec(num)
+        if not self.__utilCheckSum(res):
+            raise AttributeError("Valor no permitido, no pertenece a un sistema númerico")
+        
+        return "+, -, *, /, ^, '+'"
 
     def __utilOpDec(self, num, op):
+        specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨*"
         for i in num:
             if i not in "0123456789":
                 return op
+            if i.lower() in specialChars:
+                raise AttributeError("Valor no permitido, no es un número")
+            
+        if not self.__utilCheckSum(num):
+            raise AttributeError("Valor no permitido, no pertenece a un sistema númerico")   
+        
         return "+, -, *, /, ^, '+'"
 
     def __utilOpHex(self, num, op):
+        specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨*"
         for i in num:
-            if i not in "0123456789ABCDEFabcdef":
+            if i.lower() not in "0123456789abcdef":
                 return op
-        return "+, -, *, /, '+'"
+            if i.lower() in specialChars:
+                raise AttributeError("Valor no permitido, no es un número")
+            
+        res = self.__utilHexToDec(num)
+        if not self.__utilCheckSum(res):
+            raise AttributeError("Valor no permitido, no pertenece a un sistema númerico")
+
+        return "+, -, *, /, ^, '+'"
+    
+    def __utilBinToDec(num):
+        n = 0
+        comp = 0
+        for i in reversed(num):
+            comp += 2**n * int(i)
+            n += 1
+        return comp
+    
+    def __utilHexToDec(num):
+        n = 0
+        comp = 0
+        hexa = "0123456789abcdef"
+        for i in reversed(num):
+            for j in range(len(hexa)):
+                if i.lower() == hexa[j]:
+                    comp += 16**n * (j+1)
+            n += 1
+        return comp
+    
+    def __utilCheckSum(num): #Creo que puede arrojar ValueError
+        test = float(num) + 10 
+        if type(test) == float:
+            return True
+        return False
 
     def __utilValNegativeFormat(self, num):
         n = 0
