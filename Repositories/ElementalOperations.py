@@ -1,46 +1,46 @@
-class NumBases:
+class ElementalOperations:
     __num = ""
-    __base = ""
+    __op = ""
 
     def __init__(self, num):
         self.__utilValNum(num)
-        self.__utilValBase(num)
+        self.__utilValOp(num)
 
     def __utilValNum(self, num):
         if num == None:
             raise AttributeError("Valor nulo no permitido")
         if not self.__utilValNegativeFormat(num):
             raise AttributeError("Valor negativo con formato no permitido")
-        if not self.__utilValFractionFormat(num):
+        if not self.__utilValFracFormat(num):
             raise AttributeError("Valor de fracción con formato no permitido")
         self.__num = num
 
-    def __utilValBase(self, num):
-        base = ""
-        base = self.__utilValHex(num, base)
-        base = self.__utilValDec(num, base)
-        base = self.__utilValBin(num, base)
-        if base == "":
+    def __utilValOp(self, num):
+        op = ""
+        op = self.__utilOpDec(num, op)
+        op = self.__utilOpBin(num, op)
+        op = self.__utilOpHex(num, op)
+        if op == "":
             raise AttributeError("Valor no permitido, no es un número")
-        self.__base = base
+        self.__op = op
 
-    def __utilValBin(self, num, base):
+    def __utilOpBin(self, num, op):
         for i in num:
             if i not in "01":
-                return base
-        return "Binario/"+base
+                return op
+        return "+, -, *, /, and, or, not, ^, '+'"
 
-    def __utilValDec(self, num, base):
+    def __utilOpDec(self, num, op):
         for i in num:
             if i not in "0123456789":
-                return base
-        return "Decimal/"+base
+                return op
+        return "+, -, *, /, ^, '+'"
 
-    def __utilValHex(self, num, base):
+    def __utilOpHex(self, num, op):
         for i in num:
             if i not in "0123456789ABCDEFabcdef":
-                return base
-        return "Hexadecimal/"+base
+                return op
+        return "+, -, *, /, '+'"
 
     def __utilValNegativeFormat(self, num):
         n = 0
@@ -52,7 +52,7 @@ class NumBases:
             n += 1
         return True
 
-    def __utilValFractionFormat(self, num):
+    def __utilValFracFormat(self, num):
         n = 0
         for i in num:
             if "," in num and (n == 0 and i == ","):
@@ -71,5 +71,5 @@ class NumBases:
     def getNum(self):
         return self.__num
 
-    def getBase(self):
-        return self.__base
+    def getOperation(self):
+        return self.__op
