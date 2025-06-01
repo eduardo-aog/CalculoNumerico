@@ -1,9 +1,11 @@
 from .ErrorObj import Error as ClassError
 
 class RelativeError(ClassError):
-    def __init__(self, measuredValue=0, realValue=0):
+    def __init__(self, measuredValue, realValue):
         ClassError.__init__(self, measuredValue, realValue)
         self.relaviteError = 0.0
+        self.measuredValue = self.getMeasuredValue()
+        self.realValue = self.getRealValue()
         if self.measuredValue == None or self.realValue == None:
             raise ValueError("Error: Objeto incompleto")
 

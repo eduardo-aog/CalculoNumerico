@@ -7,12 +7,14 @@ from Repositories.RelError import RelativeError
 def ProcessMain(values): 
     measuredValue = aproxValue(values)
     realValue = exactValue(values)
-    errorObject = Error(measuredValue, realValue)
+    errorObj = Error(0.0, 0.0)
+    errorObj.setMeasuredValue(measuredValue)
+    errorObj.setRealValue(realValue)    
     
-    absErrorObject = AbsoluteError(errorObject.measuredValue, errorObject.realValue)
+    absErrorObject = AbsoluteError(errorObj.getMeasuredValue(), errorObj.getRealValue())
     absErrorCalc = absErrorObject.calcErrorAbs()
     
-    relativeErrorObject = RelativeError(errorObject.measuredValue, errorObject.realValue)
+    relativeErrorObject = RelativeError(errorObj.getMeasuredValue(), errorObj.getRealValue())
     relativeErrorCalc = relativeErrorObject.calcErrorRel()
     
     return measuredValue, realValue, absErrorCalc, relativeErrorCalc
