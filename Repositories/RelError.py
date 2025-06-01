@@ -2,17 +2,16 @@ from .ErrorObj import Error as ClassError
 
 class RelativeError(ClassError):
     def __init__(self, measuredValue, realValue):
-        ClassError.__init__(self, measuredValue, realValue)
-        self.relaviteError = 0.0
+        super().__init__(measuredValue, realValue)
         self.measuredValue = self.getMeasuredValue()
         self.realValue = self.getRealValue()
-        if self.measuredValue == None or self.realValue == None:
+        self.relativeError = 0.0
+        if self.measuredValue is None or self.realValue is None:
             raise ValueError("Error: Objeto incompleto")
 
     def calcErrorRel(self):
-        if self.realValue != None or self.measuredValue != None:
-            self.relaviteError = abs((self.realValue - self.measuredValue) / self.realValue)
-            return self.relaviteError
+        if self.realValue is not None and self.measuredValue is not None:
+            self.relativeError = abs((self.realValue - self.measuredValue) / self.realValue)
+            return self.relativeError
         else:
             raise ValueError("Error: Datos nulos")
-        
