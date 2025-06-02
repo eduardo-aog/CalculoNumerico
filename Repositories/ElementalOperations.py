@@ -30,9 +30,10 @@ class ElementalOperations:
                 return op
             if self.__utilCheckSpecialChar(i):
                 return ""
-        res = self.__utilBinToDec(num)
-        if not self.__utilCheckSum(res):
-            return ""
+        sum = self.__utilBinSum(num, num)
+        for i in sum:
+            if i not in "01":
+                return ""
         
         return "+, -, *, /, ^, ''+''"
 
@@ -42,7 +43,7 @@ class ElementalOperations:
                 return op
             if self.__utilCheckSpecialChar(i):
                 return ""
-        if not self.__utilCheckSum(num):
+        if not self.__utilDecSum(num, num):
             return ""   
         
         return "+, -, *, /, ^, ''+''"
@@ -53,9 +54,10 @@ class ElementalOperations:
                 return op
             if self.__utilCheckSpecialChar(i):
                 return ""
-        res = self.__utilHexToDec(num)
-        if not self.__utilCheckSum(res):
-            return ""
+        sum = self.__utilHexSum(num, num)
+        for i in sum:
+            if i.lower() not in "0123456789abcdef":
+                return ""
 
         return "+, -, *, /, ^, ''+''"
     
@@ -70,15 +72,18 @@ class ElementalOperations:
             return True
         return False
     
-    def __utilBinSum(self, num1, num2):
-        sum = ""
-        carry = "0"
+    def __utilLargerNumber(num1, num2):
         if len(num2) < len(num1):
             for i in range(len(num1)-len(num2)):
                 num2 = "0" + num2
-        elif len(num2) > len(num1):
-            for i in range(len(num2)-len(num1)):
-                num1 = "0" + num1
+        return num2
+    
+    def __utilBinSum(self, num1, num2):
+        sum = ""
+        carry = "0"
+
+        num2 = self.__utilLargerNumber(num1, num2)
+        num1 = self.__utilLargerNumber(num2, num1)       
         
         for i in range(len(num1)):
             lastToFirst = len(num1)-1-i
@@ -95,31 +100,55 @@ class ElementalOperations:
             else:
                 carry = "0"
         return sum
-
-    def __utilBinToDec(num):
-        n = 0
-        comp = 0
-        for i in reversed(num):
-            comp += 2**n * int(i)
-            n += 1
-        return comp
     
-    def __utilHexToDec(num):
-        n = 0
-        comp = 0
+    def __utilHexToPosition(num):
         hexa = "0123456789abcdef"
-        for i in reversed(num):
-            for j in range(len(hexa)):
-                if i.lower() == hexa[j]:
-                    comp += 16**n * j
-            n += 1
-        return comp
+        for j in range(len(hexa)):
+            if num.lower() == hexa[j]:
+                return j
+        return 0
     
-    def __utilCheckSum(num): #Creo que puede arrojar ValueError
-        test = float(num) + 10 
-        if type(test) == float:
-            return True
-        return False
+    def __utilPositionToHex(pos):
+        hexa = "0123456789abcdef"
+        for j in range(len(hexa)):
+            if pos == j:
+                return hexa[j]
+        return 0
+    
+    def __utilHexSum(self, num1, num2):
+        sum = ""
+        carry = "0"    
+
+        num2 = self.__utilLargerNumber(num1, num2)
+        num1 = self.__utilLargerNumber(num2, num1) 
+
+        for i in range(len(num1)):
+            lastToFirst = len(num1)-1-i
+            positionNum1 = self.__utilHexToPosition(num1[lastToFirst])
+            positionNum2 = self.__utilHexToPosition(num2[lastToFirst])
+            if carry=="1":
+                positionNum1 += 1
+            if (positionNum1 + positionNum2) >= 16:
+                positionSum = self.__utilPositionToHex((positionNum1 + positionNum2)-16)
+                carry = "1"
+            else:
+                positionSum = self.__utilPositionToHex((positionNum1 + positionNum2))
+                carry = "0"
+
+            sum = positionSum + sum
+            
+        if carry=="1":
+            sum = "1" + sum    
+
+        return sum
+
+    
+    def __utilDecSum(num1, num2): #Puede arrojar ValueError
+        test = str(float(num1) + float(num2)) 
+        for i in test:
+            if i not in "-,.0123456789":
+                return False
+        return True
 
     def __utilValNegativeFormat(self, num):
         n = 0
