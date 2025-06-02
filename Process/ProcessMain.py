@@ -1,5 +1,3 @@
-from .Process import aproxValue
-from .Process import exactValue
 from Repositories.ErrorObj import Error
 from Repositories.AbsError import AbsoluteError
 from Repositories.RelError import RelativeError
