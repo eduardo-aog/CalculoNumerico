@@ -99,6 +99,10 @@ class ElementalOperations:
                 carry = "1"
             else:
                 carry = "0"
+                
+        if carry=="1":
+            sum = "1" + sum 
+
         return sum
     
     def __utilHexToPosition(num):
