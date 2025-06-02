@@ -65,6 +65,37 @@ class ElementalOperations:
             return True
         return False
     
+    def __utilXorGate(a, b):
+        if (a or b) and not(a and b):
+            return True
+        return False
+    
+    def __utilBinSum(self, num1, num2):
+        sum = ""
+        carry = "0"
+        if len(num2) < len(num1):
+            for i in range(len(num1)-len(num2)):
+                num2 = "0" + num2
+        elif len(num2) > len(num1):
+            for i in range(len(num2)-len(num1)):
+                num1 = "0" + num1
+        
+        for i in range(len(num1)):
+            lastToFirst = len(num1)-1-i
+            if self.__utilXorGate(num1[lastToFirst]=="1", num2[lastToFirst]=="1") and carry=="0":
+                sum = "1" + sum
+            elif not self.__utilXorGate(num1[lastToFirst]=="1", num2[lastToFirst]=="1") and carry=="1":
+                sum = "1" + sum
+            else:
+                sum = "0" + sum
+            if num1[lastToFirst]=="1" and num2[lastToFirst]=="1":
+                carry = "1"
+            elif self.__utilXorGate(num1[lastToFirst]=="1", num2[lastToFirst]=="1") and carry =="1":
+                carry = "1"
+            else:
+                carry = "0"
+        return sum
+
     def __utilBinToDec(num):
         n = 0
         comp = 0
@@ -114,7 +145,7 @@ class ElementalOperations:
             if i == "," or i == ".":
                 return True
             n += 1
-        return True
+        return True   
 
     def getNum(self):
         return self.__num
