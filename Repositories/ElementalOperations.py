@@ -59,6 +59,7 @@ class ElementalOperations:
         sum = self.__utilHexSum(num, num)
         minus = self.__utilHexMinus(num, num)
         product = self.__utilHexMult(num, "2")
+        div = self.__utilHexDiv(num, "2")
 
         return "+, -, *, /, ''+''"
     
@@ -139,12 +140,10 @@ class ElementalOperations:
         
         return product
     
-    def __utilBinDivisionProcess(self, num1, num2, i):
-        quotient = ""
-        dividend = ""
+    def __utilBinDivisionProcess(self, num1, num2, i, quotient, dividend):
         remainder = ""
 
-        if len(quotient)!=len(num2):
+        if len(quotient)<len(num2):
             quotient = quotient + num1[i]
         else:
             remainder = self.__utilBinMinus(quotient, num2)
@@ -155,22 +154,23 @@ class ElementalOperations:
             elif remainder=="0":
                 dividend = dividend + "0"
                 remainder = ""
-        quotient = remainder
+            quotient = remainder
 
-        return dividend, remainder
+        return dividend, remainder, quotient
 
     def __utilBinDiv(self, num1, num2):
+        quotient = ""
         dividend = ""
         remainder = ""
 
         if num2!="0":
             for i in range(len(num1)+1):
-                dividend, remainder = self.__utilBinDivisionProcess(num1, num2, i)
+                dividend, remainder, quotient = self.__utilBinDivisionProcess(num1, num2, i, quotient, dividend)
         
             if remainder!="":
                 dividend = dividend + "."
                 for i in range(4): #3 decimales
-                    dividend = self.__utilBinDivisionProcess(num1, num2, i)
+                    dividend, remainder, quotient = self.__utilBinDivisionProcess(num1, num2, i, quotient, dividend)
 
         return dividend               
   
@@ -237,7 +237,7 @@ class ElementalOperations:
         if carry=="1":
             self.__utilHexSum(minus, carry)
         
-        return minus
+        return minus, carry
     
     def __utilHexMult(self, num1, num2):
         aux = ""
@@ -282,6 +282,48 @@ class ElementalOperations:
 
         return product
 
+    def __utilHexDivisionProcess(self, num1, num2, i, quotient, dividend):
+        prevRemainder = ""
+        remainder = ""
+        carry = ""
+
+        if len(quotient)<len(num2):
+            quotient = quotient + num1[i]
+        else:
+            for i in range(16):
+                mult = self.__utilPositionToHex(i+1)
+                remainder, carry = self.__utilBinMinus(quotient, self.__utilHexMult(num2,mult))
+                if carry=="1" and i==0:
+                    quotient = quotient + num1[i]
+                    i -= 1
+                if carry!="1" and prevRemainder!="":
+                    remainder = prevRemainder
+                    dividend = self.__utilPositionToHex(i) + dividend
+                    break
+                elif carry!="1" and prevRemainder=="":
+                    dividend = self.__utilPositionToHex(i) + dividend
+                    break 
+                else:
+                    prevRemainder = remainder
+            quotient = remainder
+
+        return dividend, remainder, quotient  
+
+    def __utilHexDiv(self, num1, num2):
+        quotient = ""
+        dividend = ""
+        remainder = ""
+
+        if num2!="0":
+            for i in range(len(num1)+1):
+                dividend, remainder, quotient = self.__utilHexDivisionProcess(num1, num2, i, quotient, dividend)
+        
+            if remainder!="":
+                dividend = dividend + "."
+                for i in range(4): #3 decimales
+                    dividend, remainder, quotient = self.__utilHexDivisionProcess(num1, num2, i, quotient, dividend)
+        
+        return dividend
     
     def __utilDecSum(num1, num2): #Puede arrojar ValueError
         test = str(float(num1) + float(num2)) 
