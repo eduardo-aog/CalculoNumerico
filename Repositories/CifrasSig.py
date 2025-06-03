@@ -22,7 +22,6 @@ class CifrasSig:
             raise ValueError("Error: Tipo de dato incorrecto")
         return cifra.replace(" ", "")
 
-#Cifra = CifrasSig()
             
 
 
