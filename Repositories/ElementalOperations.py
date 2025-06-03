@@ -31,11 +31,9 @@ class ElementalOperations:
             if self.__utilCheckSpecialChar(i):
                 return ""
         sum = self.__utilBinSum(num, num)
-        for i in sum:
-            if i not in "01":
-                return ""
+        minus = self.__utilBinMinus(num, num)
         
-        return "+, -, *, /, ^, ''+''"
+        return "+, -, *, /, ''+''"
 
     def __utilOpDec(self, num, op):
         for i in num:
@@ -46,7 +44,7 @@ class ElementalOperations:
         if not self.__utilDecSum(num, num):
             return ""   
         
-        return "+, -, *, /, ^, ''+''"
+        return "+, -, *, /, ''+''"
 
     def __utilOpHex(self, num, op):
         for i in num:
@@ -55,11 +53,10 @@ class ElementalOperations:
             if self.__utilCheckSpecialChar(i):
                 return ""
         sum = self.__utilHexSum(num, num)
-        for i in sum:
-            if i.lower() not in "0123456789abcdef":
-                return ""
+        minus = self.__utilHexMinus(num, num)
+        product = self.__utilBinMult(num, "10")
 
-        return "+, -, *, /, ^, ''+''"
+        return "+, -, *, /, ''+''"
     
     def __utilCheckSpecialChar(n):
         specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨*"
@@ -103,7 +100,47 @@ class ElementalOperations:
         if carry=="1":
             sum = "1" + sum 
 
-        return sum
+        return sum, carry
+    
+    def __utilComplement1(num):
+        complement1 = ""
+        for i in range(len(num)):
+            lastToFirst = len(num)-1-i
+            if num[lastToFirst]=="1":
+                complement1 = "0" + complement1
+            elif num[lastToFirst]=="0":
+                complement1 = "1" + complement1
+        return complement1
+                
+    def __utilBinMinus(self, num1, num2):
+        complement1 = ""
+        minus = ""
+        carry = "0"
+
+        num2 = self.__utilLargerNumber(num1, num2)
+        num1 = self.__utilLargerNumber(num2, num1) 
+
+        complement1 = self.__utilComplement1(num2)
+        minus, carry = self.__utilBinSum(num1, complement1)
+        if carry=="1":
+            self.__utilBinSum(minus, carry)
+        
+        return minus
+    
+    def __utilBinMult(self, num1, num2):
+        product = ""
+        mult = num1
+
+        for i in range(len(num2)):
+            lastToFirst = len(num2)-1-i
+            if num2[lastToFirst]=="1" and i!=0:
+                product = self.__utilBinSum(num1, mult) + product
+                mult = mult + "0"
+            else:
+                mult = mult + "0"
+        
+        return product
+
     
     def __utilHexToPosition(num):
         hexa = "0123456789abcdef"
@@ -144,7 +181,50 @@ class ElementalOperations:
         if carry=="1":
             sum = "1" + sum    
 
-        return sum
+        return sum, carry
+
+    def __utilComplement15(self, numHex):
+        numHexPos = 0
+        numHexC15 = ""
+
+        for i in range(len(numHex)):
+            lastToFirst = len(numHex)-1-i
+            numHexPos = self.__utilHexToPosition(numHex[lastToFirst])
+            numHexC15 = self.__utilPositionToHex(16-numHexPos) + numHexC15
+
+        return numHexC15
+    
+    def __utilHexMinus(self, num1, num2):
+        complement15 = ""
+        minus = ""
+        carry = "0"
+
+        num2 = self.__utilLargerNumber(num1, num2)
+        num1 = self.__utilLargerNumber(num2, num1) 
+
+        complement15 = self.__utilComplement15(num2)
+        minus, carry = self.__utilHexSum(num1, complement15)
+        if carry=="1":
+            self.__utilHexSum(minus, carry)
+        
+        return minus
+    
+    def __utilHexMult(self, num1, num2):
+        product = ""
+        mult1 = ""
+        mult2 = ""
+        multiplierHex = ""
+
+        for i in range(len(num2)):
+            lastToFirst = len(num2)-1-i
+            multiplierHex = self.__utilHexToPosition(num2[lastToFirst])
+            if multiplierHex>1:
+                for i in range(multiplierHex-1):
+                    mult1 = self.__utilHexSum(num1, num1) + mult1
+            else:
+                mult1 = "0" + mult1
+        
+        return product
 
     
     def __utilDecSum(num1, num2): #Puede arrojar ValueError
