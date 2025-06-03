@@ -14,7 +14,7 @@ class ElementalOperations:
         if not self.__utilValFractionFormat(num):
             raise AttributeError("Valor de fracción con formato no permitido")
         if not self.__utilValSpecialChar(num):
-            raise AttributeError("Valor no permitido no es un número")
+            raise AttributeError("Valor no permitido, no es un número")
         self.__num = num
 
     def __utilValOp(self, num):
@@ -33,6 +33,7 @@ class ElementalOperations:
         sum = self.__utilBinSum(num, num)
         minus = self.__utilBinMinus(num, num)
         product = self.__utilBinMult(num, "10")
+        div = self.__utilBinDiv(num, "10")
         
         return "+, -, *, /, ''+''"
 
@@ -45,6 +46,8 @@ class ElementalOperations:
         if not self.__utilDecMinus(num, num):
             return ""
         if not self.__utilDecMult(num, "2"):
+            return ""
+        if not self.__utilDecDiv(num, "2"):
             return ""
         
         return "+, -, *, /, ''+''"
@@ -135,8 +138,42 @@ class ElementalOperations:
                 mult = mult + "0"
         
         return product
-
     
+    def __utilBinDivisionProcess(self, num1, num2, i):
+        quotient = ""
+        dividend = ""
+        remainder = ""
+
+        if len(quotient)!=len(num2):
+            quotient = quotient + num1[i]
+        else:
+            remainder = self.__utilBinMinus(quotient, num2)
+            if remainder=="1" or quotient==num2:
+                dividend = dividend + "1"
+                if quotient==num2:
+                    remainder = ""
+            elif remainder=="0":
+                dividend = dividend + "0"
+                remainder = ""
+        quotient = remainder
+
+        return dividend, remainder
+
+    def __utilBinDiv(self, num1, num2):
+        dividend = ""
+        remainder = ""
+
+        if num2!="0":
+            for i in range(len(num1)+1):
+                dividend, remainder = self.__utilBinDivisionProcess(num1, num2, i)
+        
+            if remainder!="":
+                dividend = dividend + "."
+                for i in range(4): #3 decimales
+                    dividend = self.__utilBinDivisionProcess(num1, num2, i)
+
+        return dividend               
+  
     def __utilHexToPosition(num):
         hexa = "0123456789abcdef"
         for j in range(len(hexa)):
@@ -265,6 +302,14 @@ class ElementalOperations:
         for i in test:
             if i not in "-,.0123456789":
                 return False
+        return True
+    
+    def __utilDecDiv(num1, num2):
+        if float(num2)!=0:
+            test = str(float(num1) / float(num2)) 
+            for i in test:
+                if i not in "-,.0123456789":
+                    return False               
         return True
 
     def __utilValNegativeFormat(self, num):
