@@ -4,19 +4,29 @@ from Repositories.ElementalOperations import ElementalOperations
 from Repositories.CifrasSig import CifrasSig
 
 def findBinArchive(archive):
+    if archive is None:
+        raise ValueError("No se puede encontrar un archivo vacio")
+    
     items = archive.getDirectoriesList()
+    if not items:
+        raise ValueError("No se encontraron directorios")
+    
     for i in items:
-        if "." in i.split("_"):
-            if i.split(".")[1]=="bin":
-                return i.split(".")[0]
+        if not isinstance(i, str):
+            continue
+        parts = i.split("_")
+        if "." in parts:
+            file_parts = i.split(".")
+            if len(file_parts) == 2 and file_parts[1] == "bin":
+                return file_parts[0]
+    
+    raise FileNotFoundError("No se encontró ningún archivo .bin en el directorio")
 
 def linesInArchive(archive):
+    if archive is None:
+        raise ValueError("No se puede leer un archivo vacio")
+    
     array = numpy.array([0, 0])
-
-    if archive == None:
-        print("Object-File: Archivo vacío")
-        return array
-
     lines = numpy.array([])
     n = 0
     aux = 0
@@ -32,10 +42,8 @@ def linesInArchive(archive):
     return array
 
 def readContent(archive, arraySize):
-    i = 0
-    if archive == None or arraySize == None:
-        print("Object-Error: Un objeto es nulo")
-        return None
+    if archive is None or arraySize is None:
+        raise ValueError("No se puede leer un archivo vacio")
     
     textData = numpy.empty(arraySize, dtype=object)
     for lin in archive:
@@ -50,18 +58,23 @@ def readContent(archive, arraySize):
     return textData
 
 def readNumbersData(textData):
+    if textData is None:
+        raise ValueError("No se pudo leer el número")
+    
     arFinal = numpy.array(textData.size, dtype=object)
     k = 0
     for i in range(len(textData)):
         for j in range(len(textData[i])):
             try:
-                if textData[i][j]!="":
+                if textData[i][j] != "":
                     num = textData[i][j]
                     bases = NumBases.NumBases(num)
                     operations = ElementalOperations.ElementalOperations(num)
                     cifras = CifrasSig.CifrasSig(num)
                     arFinal[k] = num+"#"+bases.getBase()+"#"+operations.getOperation()+"#"+cifras.getCifras()
                     k += 1
-            except (AttributeError, ValueError):
-                print("No es un numero: "+textData[i][j])
+            except (AttributeError, ValueError) as e:
+                print(f"No es un número válido: {textData[i][j]} - Error: {e}")
+            except Exception as e:
+                print(f"Error inesperado al procesar {textData[i][j]}: {e}")
     return arFinal
