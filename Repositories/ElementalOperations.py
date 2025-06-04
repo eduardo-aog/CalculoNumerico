@@ -140,29 +140,29 @@ class ElementalOperations:
         
         return product
 
-    def __utilBinDiv(self, num1, num2): #cambiar nombres
-        quotient = ""
-        dividend = ""
-        remainder = ""
+    def __utilBinDiv(self, num1, num2):
+        digsForOperation = ""
+        result = ""
+        carry = ""
 
         if num2!="0":
             for i in range(len(num1)+1):
-                if len(quotient)<len(num2):
-                    quotient = quotient + num1[i]
+                if len(digsForOperation)<len(num2):
+                    digsForOperation = digsForOperation + num1[i]
                 else:
-                    remainder = self.__utilBinMinus(quotient, num2)
-                if remainder=="1" or quotient==num2:
-                    dividend = dividend + "1"
-                    if quotient==num2:
-                        remainder = ""
-                elif remainder=="0":
-                    dividend = dividend + "0"
-                    remainder = ""
-                quotient = remainder
+                    carry = self.__utilBinMinus(digsForOperation, num2)
+                if carry=="1" or digsForOperation==num2:
+                    result = result + "1"
+                    if digsForOperation==num2:
+                        carry = ""
+                elif carry=="0":
+                    result = result + "0"
+                    carry = ""
+                digsForOperation = carry
 
-        return dividend   
+        return result   
                 
-    #Pueden arrojar ValueError
+    #Pueden arrojar ValueError las op decimales
     def __utilDecSum(num1, num2): 
         test = str(float(num1) + float(num2)) 
         for i in test:
