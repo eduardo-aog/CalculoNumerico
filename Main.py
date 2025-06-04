@@ -1,23 +1,22 @@
-from Process.ProcessMain import ProcessMain
-from Helpers.ConsultMain import ConsultMain
+from Helpers.ConsultMain import consultMain
+from Repositories.ArchiveUtil import ArchiveUtil
+from Composables.storeMain import storeMain
+import os
 
 def Main():
-# Inicializacion
-    values = [[20.7,70.3,90.8],[18,30.7,10.1],[60,60.33,10.8],[80,600,30.123]]  
-    
-# Proceso
-    measuredValue, realValue, absoluteError, relativeError = ProcessMain(values)    
-    
-# Impresion de resultados
-    ConsultMain(measuredValue, realValue, absoluteError, relativeError)
-    print("Fin del programa")
-    
-# Eliminacion de instancias
-    values = None
-    realValue = 0.0
-    measuredValue = 0.0
-    absoluteError = 0.0
-    relativeError = 0.0
+    sep = os.path.sep
+    actualRoute = os.path.dirname(os.path.abspath(__file__))
+    storageRoute = sep.join(actualRoute.split(sep)[:-1])+sep+"Storage"
+
+    try:
+        archive = ArchiveUtil(storageRoute)
+    except(NotADirectoryError, FileNotFoundError) as e:
+        print("Error, al abrir el archivo: "+e)
+        return
+
+    arFinal, serialRead = consultMain(archive)
+
+    storeMain(archive, arFinal, serialRead)
 
 # Llamada a la funcion 
 Main()
