@@ -1,15 +1,14 @@
 import numpy
-from Repositories import ArchiveUtil
-from Repositories import NumBases
-from Repositories import ElementalOperations
+from Repositories.NumBases import NumBases
+from Repositories.ElementalOperations import ElementalOperations
+from Repositories.CifrasSig import CifrasSig
 
-
-def showCase(measuredValue, realValue, absoluteError, relativeError):
-    print("Valor medido: ",measuredValue)
-    print("Valor real: ", realValue)
-    print("Error absoluto de la medida: ",absoluteError)
-    print("Error relativo de la medida: ",relativeError)
-    print("Error relativo de la medida en porcentaje: ",relativeError*100,"% ")
+def findBinArchive(archive):
+    items = archive.getDirectoriesList()
+    for i in items:
+        if "." in i.split("_"):
+            if i.split(".")[1]=="bin":
+                return i.split(".")[0]
 
 def linesInArchive(archive):
     array = numpy.array([0, 0])
@@ -49,3 +48,20 @@ def readContent(archive, arraySize):
                 textData[i][j] = reg[j]
         i += 1
     return textData
+
+def readNumbersData(textData):
+    arFinal = numpy.array(textData.size, dtype=object)
+    k = 0
+    for i in range(len(textData)):
+        for j in range(len(textData[i])):
+            try:
+                if textData[i][j]!="":
+                    num = textData[i][j]
+                    bases = NumBases.NumBases(num)
+                    operations = ElementalOperations.ElementalOperations(num)
+                    cifras = CifrasSig.CifrasSig(num)
+                    arFinal[k] = num+"#"+bases.getBase()+"#"+operations.getOperation()+"#"+cifras.getCifras()
+                    k += 1
+            except (AttributeError, ValueError):
+                print("No es un numero: "+textData[i][j])
+    return arFinal

@@ -35,7 +35,7 @@ class ElementalOperations:
         product = self.__utilBinMult(num, "10")
         div = self.__utilBinDiv(num, "10")
         
-        return "+, -, *, /, ''+''"
+        return "+, -, *, /, +(Concatenación)"
 
     def __utilOpDec(self, num, op):
         for i in num:
@@ -50,20 +50,16 @@ class ElementalOperations:
         if not self.__utilDecDiv(num, "2"):
             return ""
         
-        return "+, -, *, /, ''+''"
+        return "+, -, *, /, +(Concatenación)"
 
     def __utilOpHex(self, num, op):
         for i in num:
             if i.lower() not in "0123456789abcdef":
                 return op
-        sum = self.__utilHexSum(num, num)
-        minus = self.__utilHexMinus(num, num)
-        product = self.__utilHexMult(num, "2")
-        div = self.__utilHexDiv(num, "2")
 
-        return "+, -, *, /, ''+''"
+        return "+(Concatenación)"
     
-    def __utilXorGate(a, b):
+    def __utilTrueOneButNotBoth(a, b):
         if (a or b) and not(a and b):
             return True
         return False
@@ -83,15 +79,17 @@ class ElementalOperations:
         
         for i in range(len(num1)):
             lastToFirst = len(num1)-1-i
-            if self.__utilXorGate(num1[lastToFirst]=="1", num2[lastToFirst]=="1") and carry=="0":
+            bin1 = num1[lastToFirst]=="1"
+            bin2 = num2[lastToFirst]=="1"
+            if self.__utilTrueOneButNotBoth(bin1, bin2) and carry=="0":
                 sum = "1" + sum
-            elif not self.__utilXorGate(num1[lastToFirst]=="1", num2[lastToFirst]=="1") and carry=="1":
+            elif not self.__utilTrueOneButNotBoth(bin1, bin2) and carry=="1":
                 sum = "1" + sum
             else:
                 sum = "0" + sum
-            if num1[lastToFirst]=="1" and num2[lastToFirst]=="1":
+            if bin1 and bin2:
                 carry = "1"
-            elif self.__utilXorGate(num1[lastToFirst]=="1", num2[lastToFirst]=="1") and carry =="1":
+            elif self.__utilTrueOneButNotBoth(bin1, bin2) and carry =="1":
                 carry = "1"
             else:
                 carry = "0"
@@ -102,27 +100,29 @@ class ElementalOperations:
         return sum, carry
     
     def __utilComplement1(num):
-        complement1 = ""
+        inverseValue = ""
         for i in range(len(num)):
             lastToFirst = len(num)-1-i
             if num[lastToFirst]=="1":
-                complement1 = "0" + complement1
+                inverseValue = "0" + inverseValue
             elif num[lastToFirst]=="0":
-                complement1 = "1" + complement1
-        return complement1
+                inverseValue = "1" + inverseValue
+        return inverseValue
                 
     def __utilBinMinus(self, num1, num2):
-        complement1 = ""
+        inverseValue = ""
         minus = ""
         carry = "0"
 
         num2 = self.__utilLargerNumber(num1, num2)
         num1 = self.__utilLargerNumber(num2, num1) 
 
-        complement1 = self.__utilComplement1(num2)
-        minus, carry = self.__utilBinSum(num1, complement1)
+        inverseValue = self.__utilComplement1(num2)
+        minus, carry = self.__utilBinSum(num1, inverseValue)
         if carry=="1":
             self.__utilBinSum(minus, carry)
+        else:
+            minus = "-" + minus
         
         return minus
     
@@ -139,193 +139,31 @@ class ElementalOperations:
                 mult = mult + "0"
         
         return product
-    
-    def __utilBinDivisionProcess(self, num1, num2, i, quotient, dividend):
-        remainder = ""
 
-        if len(quotient)<len(num2):
-            quotient = quotient + num1[i]
-        else:
-            remainder = self.__utilBinMinus(quotient, num2)
-            if remainder=="1" or quotient==num2:
-                dividend = dividend + "1"
-                if quotient==num2:
-                    remainder = ""
-            elif remainder=="0":
-                dividend = dividend + "0"
-                remainder = ""
-            quotient = remainder
-
-        return dividend, remainder, quotient
-
-    def __utilBinDiv(self, num1, num2):
+    def __utilBinDiv(self, num1, num2): #cambiar nombres
         quotient = ""
         dividend = ""
         remainder = ""
 
         if num2!="0":
             for i in range(len(num1)+1):
-                dividend, remainder, quotient = self.__utilBinDivisionProcess(num1, num2, i, quotient, dividend)
-        
-            if remainder!="":
-                dividend = dividend + "."
-                for i in range(4): #3 decimales
-                    dividend, remainder, quotient = self.__utilBinDivisionProcess(num1, num2, i, quotient, dividend)
-
-        return dividend               
-  
-    def __utilHexToPosition(num):
-        hexa = "0123456789abcdef"
-        for j in range(len(hexa)):
-            if num.lower() == hexa[j]:
-                return j
-        return 0
-    
-    def __utilPositionToHex(pos):
-        hexa = "0123456789abcdef"
-        for j in range(len(hexa)):
-            if pos == j:
-                return hexa[j]
-        return 0
-    
-    def __utilHexSum(self, num1, num2):
-        sum = ""
-        carry = "0"    
-
-        num2 = self.__utilLargerNumber(num1, num2)
-        num1 = self.__utilLargerNumber(num2, num1) 
-
-        for i in range(len(num1)):
-            lastToFirst = len(num1)-1-i
-            positionNum1 = self.__utilHexToPosition(num1[lastToFirst])
-            positionNum2 = self.__utilHexToPosition(num2[lastToFirst])
-            if carry=="1":
-                positionNum1 += 1
-            if (positionNum1 + positionNum2) >= 16:
-                positionSum = self.__utilPositionToHex((positionNum1 + positionNum2)-16)
-                carry = "1"
-            else:
-                positionSum = self.__utilPositionToHex((positionNum1 + positionNum2))
-                carry = "0"
-            sum = positionSum + sum
-        if carry=="1":
-            sum = "1" + sum    
-
-        return sum, carry
-
-    def __utilComplement15(self, numHex):
-        numHexPos = 0
-        numHexC15 = ""
-
-        for i in range(len(numHex)):
-            lastToFirst = len(numHex)-1-i
-            numHexPos = self.__utilHexToPosition(numHex[lastToFirst])
-            numHexC15 = self.__utilPositionToHex(16-numHexPos) + numHexC15
-
-        return numHexC15
-    
-    def __utilHexMinus(self, num1, num2):
-        complement15 = ""
-        minus = ""
-        carry = "0"
-
-        num2 = self.__utilLargerNumber(num1, num2)
-        num1 = self.__utilLargerNumber(num2, num1) 
-
-        complement15 = self.__utilComplement15(num2)
-        minus, carry = self.__utilHexSum(num1, complement15)
-        if carry=="1":
-            self.__utilHexSum(minus, carry)
-        
-        return minus, carry
-    
-    def __utilHexMult(self, num1, num2):
-        aux = ""
-        carry = ""
-        product = "0"
-        mult = ""
-        multiplierHex = ""
-
-        for i in range(len(num2)):
-            mult = ""
-            carry = ""
-            lastToFirst2 = len(num2)-1-i
-            for j in range(len(num1)):
-                lastToFirst1 = len(num1)-1-j
-                multiplierHex = self.__utilHexToPosition(num2[lastToFirst2])
-                if multiplierHex>1:
-                    for k in range(multiplierHex-1):
-                        aux = self.__utilHexSum(num1[lastToFirst1], num1[lastToFirst1])
-                    if carry!="":
-                        aux = self.__utilHexSum(aux, carry)                    
-                    mult = aux[len(aux)-1] + mult
-                    carry = aux[:-1]     
-                elif multiplierHex==1:
-                    if carry=="":
-                        mult = num1[lastToFirst1] + mult
-                    else:
-                        aux = self.__utilHexSum(num1[lastToFirst1], carry[len(carry)-1])                        
-                        mult = aux[len(aux)-1] + mult
-                        carry = aux[:-1]                        
-                else:
-                    if carry=="":
-                        mult = "0" + mult
-                    else:
-                        mult = carry[len(carry)-1] + mult
-                        carry = carry[:-1]
-                if j==len(num1)-1 and carry!="":
-                    mult = carry + mult         
-            if i!=0:
-                for m in range(i):
-                    mult = mult + "0"
-            product = self.__utilHexSum(mult, product)
-
-        return product
-
-    def __utilHexDivisionProcess(self, num1, num2, i, quotient, dividend):
-        prevRemainder = ""
-        remainder = ""
-        carry = ""
-
-        if len(quotient)<len(num2):
-            quotient = quotient + num1[i]
-        else:
-            for i in range(16):
-                mult = self.__utilPositionToHex(i+1)
-                remainder, carry = self.__utilBinMinus(quotient, self.__utilHexMult(num2,mult))
-                if carry=="1" and i==0:
+                if len(quotient)<len(num2):
                     quotient = quotient + num1[i]
-                    i -= 1
-                if carry!="1" and prevRemainder!="":
-                    remainder = prevRemainder
-                    dividend = self.__utilPositionToHex(i) + dividend
-                    break
-                elif carry!="1" and prevRemainder=="":
-                    dividend = self.__utilPositionToHex(i) + dividend
-                    break 
                 else:
-                    prevRemainder = remainder
-            quotient = remainder
+                    remainder = self.__utilBinMinus(quotient, num2)
+                if remainder=="1" or quotient==num2:
+                    dividend = dividend + "1"
+                    if quotient==num2:
+                        remainder = ""
+                elif remainder=="0":
+                    dividend = dividend + "0"
+                    remainder = ""
+                quotient = remainder
 
-        return dividend, remainder, quotient  
-
-    def __utilHexDiv(self, num1, num2):
-        quotient = ""
-        dividend = ""
-        remainder = ""
-
-        if num2!="0":
-            for i in range(len(num1)+1):
-                dividend, remainder, quotient = self.__utilHexDivisionProcess(num1, num2, i, quotient, dividend)
-        
-            if remainder!="":
-                dividend = dividend + "."
-                for i in range(4): #3 decimales
-                    dividend, remainder, quotient = self.__utilHexDivisionProcess(num1, num2, i, quotient, dividend)
-        
-        return dividend
-    
-    def __utilDecSum(num1, num2): #Puede arrojar ValueError
+        return dividend   
+                
+    #Pueden arrojar ValueError
+    def __utilDecSum(num1, num2): 
         test = str(float(num1) + float(num2)) 
         for i in test:
             if i not in "-,.0123456789":
@@ -381,7 +219,7 @@ class ElementalOperations:
         return True   
     
     def __utilValSpecialChar(num):
-        specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨*"
+        specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨* "
         for i in num:
             if i.lower() in specialChars:
                 return False

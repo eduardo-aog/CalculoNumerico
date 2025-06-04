@@ -1,5 +1,8 @@
-from .ConsultData import showCase #$$$4U
+from Helpers.ConsultData import linesInArchive, readContent, readNumbersData, findBinArchive
 
-def ConsultMain(measuredValue, realValue, absoluteError, relativeError):
-    showCase(measuredValue, realValue, absoluteError, relativeError)
-    
+def consultMain(archive, binArchive):
+    serialRead = findBinArchive(archive)
+    lines = linesInArchive(archive.getArchive(binArchive))
+    textData = readContent(archive.getArchive(binArchive), lines)
+    arFinal = readNumbersData(textData)
+    return arFinal, serialRead
