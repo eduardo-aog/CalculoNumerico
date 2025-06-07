@@ -4,7 +4,13 @@ from Repositories.ElementalOperations import ElementalOperations
 #from Repositories.CifrasSig import CifrasSig
 
 def findBinArchive(archive):
+    if archive is None:
+        raise ValueError("No se puede encontrar un archivo vacio")
+    
     items = archive.getDirectoriesList()
+    if not items:
+        raise ValueError("No se encontraron directorios")
+    
     for i in items:
         nameArchive = numpy.array(i.split("_"))
         lastItem = len(nameArchive)-1
@@ -13,12 +19,10 @@ def findBinArchive(archive):
                 return nameArchive[lastItem].split(".")[0]
 
 def linesInArchive(archive):
+    if archive is None:
+        raise ValueError("No se puede leer un archivo vacio")
+    
     array = numpy.array([0, 0])
-
-    if archive == None:
-        print("Object-File: Archivo vacío")
-        return array
-
     lines = numpy.array([])
     n = 0
     aux = 0
@@ -52,13 +56,17 @@ def readContent(archive, arraySize):
     return textData
 
 def readNumbersData(textData):
+    if textData.any == None:
+        print("Object-Error: Arreglo es nulo")
+        return None
+    
     arFinal = numpy.empty(textData.size, dtype=object)
     
     k = 0
     for i in range(len(textData)):
         for j in range(len(textData[i])):
             try:
-                if textData[i][j]!="":
+                if textData[i][j] != "":
                     num = textData[i][j]
                     bases = NumBases(num)
                     operations = ElementalOperations(num)
@@ -66,5 +74,7 @@ def readNumbersData(textData):
                     arFinal[k] = num+"#"+bases.getBase()+"#"+operations.getOperation()+"#"
                     k += 1
             except (AttributeError, ValueError) as e:
-                print(e)
+                print(f"No es un número válido: {textData[i][j]} - Error: {e}")
+            except Exception as e:
+                print(f"Error inesperado al procesar {textData[i][j]}: {e}")
     return arFinal
