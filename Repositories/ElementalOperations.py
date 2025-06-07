@@ -19,9 +19,9 @@ class ElementalOperations:
 
     def __utilValOp(self, num):
         op = ""
+        op = self.__utilOpHex(num, op)
         op = self.__utilOpDec(num, op)
         op = self.__utilOpBin(num, op)
-        op = self.__utilOpHex(num, op)
         if op == "":
             raise AttributeError("Valor no permitido, no es un número")
         self.__op = op
@@ -35,7 +35,7 @@ class ElementalOperations:
         product = self.__utilBinMult(num, "10")
         div = self.__utilBinDiv(num, "10")
         
-        return "+, -, *, /, +(Concatenación)"
+        return "+, -, *, /, +(Concatenacion)"
 
     def __utilOpDec(self, num, op):
         for i in num:
@@ -50,21 +50,21 @@ class ElementalOperations:
         if not self.__utilDecDiv(num, "2"):
             return ""
         
-        return "+, -, *, /, +(Concatenación)"
+        return "+, -, *, /, +(Concatenacion)"
 
     def __utilOpHex(self, num, op):
         for i in num:
             if i.lower() not in "0123456789abcdef":
                 return op
 
-        return "+(Concatenación)"
+        return "+(Concatenacion)"
     
-    def __utilTrueOneButNotBoth(a, b):
+    def __utilTrueOneButNotBoth(self, a, b):
         if (a or b) and not(a and b):
             return True
         return False
     
-    def __utilLargerNumber(num1, num2):
+    def __utilLargerNumber(self, num1, num2):
         if len(num2) < len(num1):
             for i in range(len(num1)-len(num2)):
                 num2 = "0" + num2
@@ -99,7 +99,7 @@ class ElementalOperations:
 
         return sum, carry
     
-    def __utilComplement1(num):
+    def __utilComplement1(self, num):
         inverseValue = ""
         for i in range(len(num)):
             lastToFirst = len(num)-1-i
@@ -120,7 +120,7 @@ class ElementalOperations:
         inverseValue = self.__utilComplement1(num2)
         minus, carry = self.__utilBinSum(num1, inverseValue)
         if carry=="1":
-            self.__utilBinSum(minus, carry)
+            minus = self.__utilBinSum(minus, carry)
         else:
             minus = "-" + minus
         
@@ -133,7 +133,7 @@ class ElementalOperations:
         for i in range(len(num2)):
             lastToFirst = len(num2)-1-i
             if num2[lastToFirst]=="1" and i!=0:
-                product = self.__utilBinSum(num1, mult) + product
+                product = self.__utilBinSum(num1, mult)[0] + product
                 mult = mult + "0"
             else:
                 mult = mult + "0"
@@ -146,9 +146,11 @@ class ElementalOperations:
         carry = ""
 
         if num2!="0":
-            for i in range(len(num1)+1):
+            for i in range(len(num1)):
                 if len(digsForOperation)<len(num2):
                     digsForOperation = digsForOperation + num1[i]
+                    if result!="":
+                        result = result + "0"
                 else:
                     carry = self.__utilBinMinus(digsForOperation, num2)
                 if carry=="1" or digsForOperation==num2:
@@ -163,28 +165,28 @@ class ElementalOperations:
         return result   
                 
     #Pueden arrojar ValueError las op decimales
-    def __utilDecSum(num1, num2): 
+    def __utilDecSum(self, num1, num2): 
         test = str(float(num1) + float(num2)) 
         for i in test:
             if i not in "-,.0123456789":
                 return False
         return True
     
-    def __utilDecMinus(num1, num2):
+    def __utilDecMinus(self, num1, num2):
         test = str(float(num1) - float(num2)) 
         for i in test:
             if i not in "-,.0123456789":
                 return False
         return True
     
-    def __utilDecMult(num1, num2):
+    def __utilDecMult(self, num1, num2):
         test = str(float(num1) * float(num2)) 
         for i in test:
             if i not in "-,.0123456789":
                 return False
         return True
     
-    def __utilDecDiv(num1, num2):
+    def __utilDecDiv(self, num1, num2):
         if float(num2)!=0:
             test = str(float(num1) / float(num2)) 
             for i in test:
@@ -218,7 +220,7 @@ class ElementalOperations:
             n += 1
         return True   
     
-    def __utilValSpecialChar(num):
+    def __utilValSpecialChar(self, num):
         specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨* "
         for i in num:
             if i.lower() in specialChars:
