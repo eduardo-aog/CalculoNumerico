@@ -70,7 +70,7 @@ class NumBases:
             n += 1
         return True
     
-    def __utilValSpecialChar(num):
+    def __utilValSpecialChar(self, num):
         specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨* "
         for i in num:
             if i.lower() in specialChars:

@@ -6,9 +6,11 @@ from Repositories.CifrasSig import CifrasSig
 def findBinArchive(archive):
     items = archive.getDirectoriesList()
     for i in items:
-        if "." in i.split("_"):
-            if i.split(".")[1]=="bin":
-                return i.split(".")[0]
+        nameArchive = numpy.array(i.split("_"))
+        lastItem = len(nameArchive)-1
+        if "." in nameArchive[lastItem]:
+            if numpy.array(nameArchive[lastItem].split("."))[1]=="bin":
+                return nameArchive[lastItem].split(".")[0]
 
 def linesInArchive(archive):
     array = numpy.array([0, 0])
@@ -33,7 +35,7 @@ def linesInArchive(archive):
 
 def readContent(archive, arraySize):
     i = 0
-    if archive == None or arraySize == None:
+    if archive == None or arraySize.any == None:
         print("Object-Error: Un objeto es nulo")
         return None
     
@@ -50,18 +52,19 @@ def readContent(archive, arraySize):
     return textData
 
 def readNumbersData(textData):
-    arFinal = numpy.array(textData.size, dtype=object)
+    arFinal = numpy.empty(textData.size, dtype=object)
+    
     k = 0
     for i in range(len(textData)):
         for j in range(len(textData[i])):
             try:
                 if textData[i][j]!="":
                     num = textData[i][j]
-                    bases = NumBases.NumBases(num)
-                    operations = ElementalOperations.ElementalOperations(num)
-                    cifras = CifrasSig.CifrasSig(num)
-                    arFinal[k] = num+"#"+bases.getBase()+"#"+operations.getOperation()+"#"+cifras.getCifras()
+                    bases = NumBases(num)
+                    operations = ElementalOperations(num)
+                    #cifras = CifrasSig(num)
+                    arFinal[k] = num+"#"+bases.getBase()+"#"+operations.getOperation()+"#"
                     k += 1
-            except (AttributeError, ValueError):
-                print("No es un numero: "+textData[i][j])
+            except (AttributeError, ValueError) as e:
+                print(e)
     return arFinal
