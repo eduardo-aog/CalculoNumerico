@@ -1,7 +1,7 @@
 import numpy
 from Repositories.NumBases import NumBases
 from Repositories.ElementalOperations import ElementalOperations
-from Repositories.CifrasSig import CifrasSig
+#from Repositories.CifrasSig import CifrasSig
 
 def findBinArchive(archive):
     items = archive.getDirectoriesList()
