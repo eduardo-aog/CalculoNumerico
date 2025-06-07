@@ -3,14 +3,13 @@ import time
 
 def storeData(archive, arFinal, serialRead):
     t = time.localtime()
-    timeFormat = time.strftime("%YYYY-%mm-%d %HH:%MM:%SS", t)
+    timeFormat = time.strftime("%Y-%m-%d--%H-%M-%S", t)
     rand = random.randint(0, 101)
-    nameRoute = serialRead+"_"+timeFormat+"_serial"+rand+".txt"
+    nameRoute = serialRead+"_"+timeFormat+"_serial"+str(rand)+".txt"
 
-    if archive == None or arFinal == None:
+    if archive == None or arFinal.any == None:
         print("Object-Error: Un objeto es nulo")
         return None
 
-    archive.setOrCreateFiles(nameRoute)
     for i in range(len(arFinal)):
-        archive.setOrCreateFiles(nameRoute, arFinal[i], True)
+        archive.setOrCreateFiles(nameRoute, arFinal[i], i<len(arFinal)-1)

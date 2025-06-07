@@ -4,17 +4,15 @@ from Composables.storeMain import storeMain
 import os
 
 def Main():
-    sep = os.path.sep
-    actualRoute = os.path.dirname(os.path.abspath(__file__))
-    storageRoute = sep.join(actualRoute.split(sep)[:-1])+sep+"Storage"
+    storageRoute = os.path.dirname(os.path.abspath(__file__))+os.path.sep+"Storage"
 
     try:
         archive = ArchiveUtil(storageRoute)
     except(NotADirectoryError, FileNotFoundError) as e:
-        print("Error, al abrir el archivo: "+e)
+        print(e)
         return
 
-    arFinal, serialRead = consultMain(archive)
+    arFinal, serialRead = consultMain(archive, "test_serial70.bin")
 
     storeMain(archive, arFinal, serialRead)
 
