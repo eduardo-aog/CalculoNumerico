@@ -13,6 +13,8 @@ class NumBases:
             raise AttributeError("Valor negativo con formato no permitido")
         if not self.__utilValFractionFormat(num):
             raise AttributeError("Valor de fracción con formato no permitido")
+        if not self.__utilValSpecialChar(num):
+            raise AttributeError("Valor no permitido, no es un número")
         self.__num = num
 
     def __utilValBase(self, num):
@@ -66,6 +68,13 @@ class NumBases:
             if i == "," or i == ".":
                 return True
             n += 1
+        return True
+    
+    def __utilValSpecialChar(self, num):
+        specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨* "
+        for i in num:
+            if i.lower() in specialChars:
+                return False
         return True
 
     def getNum(self):
