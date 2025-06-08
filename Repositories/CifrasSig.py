@@ -1,6 +1,9 @@
 class CifrasSig:
     def __init__(self, cifra = ""):
         self.cifra = self.validarCifra(cifra)
+        if self.cifra == "No decimal":
+            print("No tiene cifras significativas")
+            return
         self.contarCifras()
 
     def contarCifras(self): 
@@ -10,7 +13,7 @@ class CifrasSig:
             if i != "0" and i != ".": 
                 significante = True
             if significante == True:
-                if i == ".":
+                if i == "." or i == ",":
                     continue
                 contador += 1
         print(contador)
@@ -20,7 +23,16 @@ class CifrasSig:
             raise ValueError("Error: Objeto incompleto")
         if type(cifra) != str:
             raise ValueError("Error: Tipo de dato incorrecto")
-        return cifra.replace(" ", "")
+        decimal = True
+        for i in cifra:
+            if i in "ABCDEFabcdef":
+                decimal = False
+            if i in "GHIJKLMNOPQRSTUVWXYZÑghijklmnopqrstuvwxyzñ":
+                raise ValueError("Error: Tipo de dato incorrecto")
+        if decimal:
+            return cifra.replace(" ", "")
+        else:
+            return "No decimal"
 
             
 
