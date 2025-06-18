@@ -1,4 +1,4 @@
-class BasesConversion:
+class BasesConversion: 
     __num = ""
     __bases = ""
     __numBase2 = ""
@@ -30,20 +30,18 @@ class BasesConversion:
         self.__bases = bases
 
     def __utilValConversion(self, num, bases):
-        if "Binario" in bases:
-            self.__numBase2 = num
-            self.__numBase10 = self.__utilBinToDecimal(num)
-            self.__numBase16 = self.__utilDecimalToHex(self.__numBase10)
-        elif "Decimal" in bases and "Hexadecimal" in bases:
-            return 1
-        elif "Hexadecimal" in bases:
-            self.__numBase16 = num
-            self.__numBase10 = self.__utilHexToDecimal(num)
-            self.__numBase2 = self.__utilDecimalToBin(self.__numBase10)
+        separateBases = bases.split("/")
+        if "Binario" in separateBases:
+            self.__numBase2 = self.__utilBinToDecimal(num)
+            self.__numBase10 = num
+            self.__numBase16 = self.__utilHexToDecimal(num)
+        elif "Decimal" in separateBases and "Hexadecimal" in separateBases:
+            self.__numBase10 = num
+            self.__numBase16 = self.__utilHexToDecimal(num)
+        elif "Hexadecimal" in separateBases:
+            self.__numBase16 = self.__utilHexToDecimal(num)
         else:
             self.__numBase10 = num
-            self.__numBase16 = self.__utilDecimalToHex(num)
-            self.__numBase2 = self.__utilDecimalToBin(num)
         
     def __utilBinToDecimal(self, num):
         dec = 0
@@ -52,36 +50,6 @@ class BasesConversion:
             if num[lastToFirst]!="0":
                 dec = 2**i + dec
         return dec
-    
-    def __utilDecimalToHex(self, num):
-        hex = "0123456789abcdef"
-        hexConversion = ""
-        for i in range(len(num)):
-            remainder = num%16
-            num /= 16
-            if num[i]=="." or num[i]==",":
-                break
-            for j in range(16):
-                if j == remainder:
-                    hexConversion = hex[j] + hexConversion           
-        if num<0:
-            hexConversion = "-" + hexConversion
-        return hexConversion
-            
-    def __utilDecimalToBin(self, num):
-        bin = ""
-        for i in range(len(num)):
-            remainder = num%2
-            num /= 2
-            if num[i]=="." or num[i]==",":
-                break
-            if remainder==1:
-                bin = "1" + bin
-            else:
-                bin = "0" + bin           
-        if num<0:
-            bin = "-" + bin       
-        return bin
 
     def __utilHexToDecimal(self, num):
         hex = "0123456789abcdef"
@@ -140,3 +108,12 @@ class BasesConversion:
 
     def getBases(self):
         return self.__bases
+    
+    def getNumPossiblyBin(self):
+        return self.__numBase2
+    
+    def getNumPossiblyDec(self):
+        return self.__numBase10
+    
+    def getNumPossiblyHex(self):
+        return self.__numBase16

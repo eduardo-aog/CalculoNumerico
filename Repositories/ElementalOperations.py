@@ -56,6 +56,7 @@ class ElementalOperations:
         for i in num:
             if i.lower() not in "0123456789abcdef":
                 return op
+        conc = num+num
 
         return "+(Concatenacion)"
     
@@ -76,7 +77,6 @@ class ElementalOperations:
 
         num2 = self.__utilLargerNumber(num1, num2)
         num1 = self.__utilLargerNumber(num2, num1)       
-        
         for i in range(len(num1)):
             lastToFirst = len(num1)-1-i
             bin1 = num1[lastToFirst]=="1"
@@ -92,8 +92,7 @@ class ElementalOperations:
             elif self.__utilTrueOneButNotBoth(bin1, bin2) and carry =="1":
                 carry = "1"
             else:
-                carry = "0"
-                
+                carry = "0"               
         if carry=="1":
             sum = "1" + sum 
 
@@ -116,13 +115,13 @@ class ElementalOperations:
 
         num2 = self.__utilLargerNumber(num1, num2)
         num1 = self.__utilLargerNumber(num2, num1) 
-
         inverseValue = self.__utilComplement1(num2)
         minus, carry = self.__utilBinSum(num1, inverseValue)
         if carry=="1":
             minus = self.__utilBinSum(minus, carry)
         else:
-            minus = "-" + minus
+            inverseValue = self.__utilComplement1(minus)
+            minus = "-" + inverseValue
         
         return minus
     
