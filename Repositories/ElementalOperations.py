@@ -8,13 +8,13 @@ class ElementalOperations:
 
     def __utilValNum(self, num):
         if num == None:
-            raise AttributeError("Valor nulo no permitido")
+            raise ValueError("Valor nulo no permitido")
         if not self.__utilValNegativeFormat(num):
-            raise AttributeError("Valor negativo con formato no permitido")
+            raise ValueError("Valor negativo con formato no permitido")
         if not self.__utilValFractionFormat(num):
-            raise AttributeError("Valor de fracción con formato no permitido")
+            raise ValueError("Valor de fracción con formato no permitido")
         if not self.__utilValSpecialChar(num):
-            raise AttributeError("Valor no permitido, no es un número")
+            raise ValueError("Valor no permitido, no es un número")
         self.__num = num
 
     def __utilValOp(self, num):
@@ -23,7 +23,7 @@ class ElementalOperations:
         op = self.__utilOpDec(num, op)
         op = self.__utilOpBin(num, op)
         if op == "":
-            raise AttributeError("Valor no permitido, no es un número")
+            raise ValueError("Valor no permitido, no es un número")
         self.__op = op
 
     def __utilOpBin(self, num, op):
