@@ -1,6 +1,6 @@
 import numpy #Agregado ya que se está trabajndo con Numpy si no da error
 
-class CifrasSig:
+class SignificantDigits:
     def __init__(self, digit):
         self.__utilValDigit(digit)
         if self.__digit == "No decimal":
@@ -21,7 +21,7 @@ class CifrasSig:
     def __utilValDigit(self, digit):
         if digit == None:
             raise ValueError("Error: Objeto incompleto")
-        if type(digit) != str or type(digit) != numpy.str_:
+        if type(digit) != str and type(digit) != numpy.str_:
             raise ValueError("Error: Tipo de dato incorrecto")
         if not self.__utilValSpecialChar(digit):
             raise ValueError("Error: Tipo de dato incorrecto")         
