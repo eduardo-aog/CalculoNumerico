@@ -1,29 +1,50 @@
+import numpy #Agregado ya que se está trabajndo con Numpy si no da error
+
 class CifrasSig:
-    def __init__(self, cifra = ""):
-        self.cifra = self.validarCifra(cifra)
-        self.contarCifras()
+    def __init__(self, digit):
+        self.__utilValDigit(digit)
+        if self.__digit == "No decimal":
+            self.__numSignificant = "No tiene cifras significativas"
+        else:
+            self.__utilCountDigits()
 
-    def contarCifras(self): 
-        significante = False
-        contador = 0  
-        for i in self.cifra:
-            if i != "0" and i != ".": 
-                significante = True
-            if significante == True:
-                if i == ".":
-                    continue
-                contador += 1
-        print(contador)
+    def __utilCountDigits(self): 
+        countSignificant = 0  
+        for i in self.__digit:
+            significant = False
+            if i != "0" and (i != "." and i != ",") and i != "-": 
+                significant = True
+            if significant == True:
+                countSignificant += 1
+        self.__numSignificant = countSignificant
 
-    def validarCifra(self, cifra):
-        if cifra == None:
+    def __utilValDigit(self, digit):
+        if digit == None:
             raise ValueError("Error: Objeto incompleto")
-        if type(cifra) != str:
+        if type(digit) != str or type(digit) != numpy.str_:
             raise ValueError("Error: Tipo de dato incorrecto")
-        return cifra.replace(" ", "")
+        if not self.__utilValSpecialChar(digit):
+            raise ValueError("Error: Tipo de dato incorrecto")         
+        if self.__utilValNotDecimal(digit):
+            self.__digit = "No decimal"
+        else:
+            self.__digit = digit 
 
-            
-
-
-
-
+    def __utilValNotDecimal(self, digit):
+        for i in digit:
+            if i.lower() in "abcdef":
+                return True
+        return False
+    
+    def __utilValSpecialChar(self, digit):
+        specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨* "
+        for i in digit:
+            if i.lower() in specialChars:
+                return False
+        return True
+        
+    def getDigit(self):
+        return self.__digit
+    
+    def getNumSignificant(self):
+        return self.__numSignificant
