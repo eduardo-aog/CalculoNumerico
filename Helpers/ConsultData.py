@@ -16,7 +16,7 @@ def findBinArchive(archive):
         lastItem = len(nameArchive)-1
         if "." in nameArchive[lastItem]:
             if numpy.array(nameArchive[lastItem].split("."))[1]=="bin":
-                return nameArchive[lastItem].split(".")[0]
+                return i
 
 def linesInArchive(archive):
     if archive is None:
