@@ -1,14 +1,11 @@
 from Helpers.ConsultData import linesInArchive, readContent, readNumbersData, findBinArchive
 
-def consultMain(archive, binArchive):
+def consultMain(archive):
     if archive is None:
-        raise ValueError("No se puede leer un archivo vacio")
-        
-    if binArchive is None:
-        raise ValueError("No se puede leer un archivo binario vacio")
+        raise ValueError("No se puede leer el archivo vacio")
 
-    serialRead = findBinArchive(archive)
-    lines = linesInArchive(archive.getArchive(binArchive))
-    textData = readContent(archive.getArchive(binArchive), lines)
+    nameArchive = findBinArchive(archive)
+    lines = linesInArchive(archive.getArchive(nameArchive))
+    textData = readContent(archive.getArchive(nameArchive), lines)
     arFinal = readNumbersData(textData)
-    return arFinal, serialRead
+    return arFinal, nameArchive
