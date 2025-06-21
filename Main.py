@@ -12,9 +12,9 @@ def Main():
         print(e)
         return
 
-    arFinal, serialRead = consultMain(archive, "test_serial70.bin")
+    arFinal, nameArchive = consultMain(archive)
 
-    storeMain(archive, arFinal, serialRead)
+    storeMain(archive, arFinal, nameArchive)
 
 # Llamada a la funcion 
 Main()
