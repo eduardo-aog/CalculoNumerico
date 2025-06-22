@@ -64,4 +64,5 @@ class SignificantDigits:
         return self.__digit
     
     def getNumSignificant(self):
+
         return self.__numSignificant
