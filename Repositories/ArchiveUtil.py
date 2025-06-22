@@ -61,7 +61,7 @@ class ArchiveUtil():
         
         try: #usamos try en este constexto ya que OPEN es un objeto externo a nuestra clase
             if (not content or len(content) == 0):
-                archive = open(self.__router+"\\"+nameArchive+".txt", "x")
+                archive = open(self.__router+"\\"+nameArchive, "x")
                 return
             
             archive = open(self.__router+"\\"+nameArchive, "a")#requiere que el nombre venga con su extencion. 

@@ -3,7 +3,7 @@ import os
     
 def storeArchiveLog(error):
     try:
-        with open(os.path.dirname(os.path.abspath(__file__))+os.path.sep+"Errors.log", "a") as logger:
+        with open(os.path.dirname(os.path.abspath("Main.py"))+os.path.sep+"Errors.log", "a") as logger:
             logger.write(f"!!Error!!: {__validateError(error)} ({time.strftime("%Y/%m/%d_%H:%M")})\n")
     except FileNotFoundError:
         print("Error: Archivo Logger no encontrado")

@@ -36,12 +36,17 @@ class BasesConversion:
             self.__numBase10 = num
             self.__numBase16 = self.__utilHexToDecimal(num)
         elif "Decimal" in separateBases and "Hexadecimal" in separateBases:
+            self.__numBase2 = "No puede ser tomado como Binario"
             self.__numBase10 = num
             self.__numBase16 = self.__utilHexToDecimal(num)
         elif "Hexadecimal" in separateBases:
+            self.__numBase2 = "No puede ser tomado como Binario"
+            self.__numBase10 = "No puede ser tomado como Decimal"
             self.__numBase16 = self.__utilHexToDecimal(num)
         else:
+            self.__numBase2 = "No puede ser tomado como Binario"
             self.__numBase10 = num
+            self.__numBase16 = "No puede ser tomado como Hexadecimal"
         
     def __utilBinToDecimal(self, num):
         dec = 0
@@ -66,7 +71,7 @@ class BasesConversion:
             return False
         separateBases = bases.split("/")
         for i in separateBases:
-            if i!="Binario" or i!="Decimal" or i!="Hexadecimal":
+            if i!="Binario" and i!="Decimal" and i!="Hexadecimal":
                 return False
         return True
 
