@@ -1,5 +1,3 @@
-import numpy #Agregado ya que se está trabajndo con Numpy si no da error
-
 class SignificantDigits:
     def __init__(self, digit):
         self.__utilValDigit(digit)
@@ -17,43 +15,31 @@ class SignificantDigits:
         for i in self.__digit:
             if i != "0" and i != "." and i != "," and i != "-": 
                 significant = True
-            if significant == True:
+            if significant:
                 if i == "." or i == "," or i == "-":
                     significant2 = False
                     continue
                 if i == "0":
                     flag = True
-                if i != "0" and flag == False:
+                if flag:
                     countSignificant2 += 1  
                 countSignificant += 1
-                if i != "0" and flag == True:
+                if i != "0" and flag:
+                    flag = False
                     significant2 = False
             else:
                 if i != "0":
                     significant2 = False
-        self.__numSignificant = countSignificant
-        if significant == True and significant2 == True:
-            print(f"Cifras significantes: {self.__numSignificant} o {countSignificant2}")
-        elif significant == True:
-            print(f"Cifras significantes: {self.__numSignificant}")
+        if significant and significant2:
+            self.__numSignificant = "Cifras significantes: "+str(countSignificant)+" o "+str(countSignificant2)
+        elif significant:
+            self.__numSignificant = "Cifras significantes: "+str(countSignificant)
         else:
-            print("No hay cifras significativas")
-
-        countSignificant = 0  
-        for i in self.__digit:
-            significant = False
-            if i != "0" and (i != "." and i != ",") and i != "-": 
-                significant = True
-            if significant == True:
-                countSignificant += 1
-        self.__numSignificant = countSignificant
->
+            self.__numSignificant = "No hay cifras significativas"
 
     def __utilValDigit(self, digit):
         if digit == None:
             raise ValueError("Error: Objeto incompleto")
-        if type(digit) != str and type(digit) != numpy.str_:
-            raise ValueError("Error: Tipo de dato incorrecto")
         if not self.__utilValSpecialChar(digit):
             raise ValueError("Error: Tipo de dato incorrecto")         
         if self.__utilValNotDecimal(digit):
