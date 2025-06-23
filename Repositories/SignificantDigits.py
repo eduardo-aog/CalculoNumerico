@@ -22,9 +22,12 @@ class SignificantDigits:
             if i != "0" and flag:
                 flag = False
                 significant2 = False
-            countSignificant += 1
+                countSignificant += 1
+            elif i != "0":
+                significant2 = False
+                countSignificant += 1
         if significant2:
-            self.__numSignificant = "Cifras significantes: "+str(countSignificant)+" o "+str(countSignificant2)
+            self.__numSignificant = "Cifras significantes: "+str(countSignificant+countSignificant2)+" o "+str(countSignificant2)
         else:
             self.__numSignificant = "Cifras significantes: "+str(countSignificant)
 
@@ -32,7 +35,13 @@ class SignificantDigits:
         if digit == None:
             raise ValueError("Error: Objeto incompleto")
         if not self.__utilValSpecialChar(digit):
-            raise ValueError("Error: Tipo de dato incorrecto")         
+            raise ValueError("Error: Tipo de dato incorrecto")  
+        if not self.__utilValNegativeFormat(digit):
+            raise ValueError("Valor negativo con formato no permitido")
+        if "," in digit:
+            digit = self.__utilReplaceCommaFraction(digit)   
+        if not self.__utilValFractionFormat(digit):
+            raise ValueError("Valor de fracción con formato no permitido")  
         if self.__utilValNotDecimal(digit):
             self.__digit = "No decimal"
         else:
@@ -44,12 +53,38 @@ class SignificantDigits:
                 return True
         return False
     
+    def __utilValNegativeFormat(self, num):
+        n = 0
+        for i in num:
+            if "-" in num and (n == 0 and i!= "-"):
+                return False
+            if i == "-":
+                return True
+            n += 1
+        return True
+
+    def __utilValFractionFormat(self, num):
+        n = 0
+        for i in num:           
+            if "." in num and (n == 0 and i == "."):
+                return False
+            if ("." in num and "-" in num) and (n == 1 and i == "."):
+                return False
+            if i == ".":
+                return True
+            n += 1
+        return True   
+
     def __utilValSpecialChar(self, digit):
         specialChars = "qwrtyuiopsghjklñzxvnm|°¬!#$%&/()=?¡'¿´+{}[];:_¨* "
         for i in digit:
             if i.lower() in specialChars:
                 return False
         return True
+    
+    def __utilReplaceCommaFraction(self, digit):
+        commaless = digit.split(",")
+        return commaless[0]+"."+commaless[1]
         
     def getDigit(self):
         return self.__digit
