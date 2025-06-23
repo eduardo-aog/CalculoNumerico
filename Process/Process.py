@@ -2,6 +2,8 @@ from Repositories.BasesConversion import BasesConversion
 from Repositories.NumBases import NumBases
 from Repositories.ElementalOperations import ElementalOperations
 from Repositories.SignificantDigits import SignificantDigits
+from Repositories.CheckEcuationResolvable import CheckEcuationResolvable
+from Repositories.MatrixOperations import MatrixOperations
 from Repositories.Logger import storeArchiveLog
 
 def aproxValue(values):
@@ -28,11 +30,42 @@ def exactValue(values):
     else:
         print("Datos nulos. Fin del programa")
 
+def replaceString(oldChar, newChar, strToReplace):
+    newStr = ""
+    if oldChar in strToReplace:
+        separateStr = strToReplace.split(oldChar)
+        for i in range(len(separateStr)):
+            if i < len(separateStr)-1:
+                newStr = newStr+separateStr[i]+newChar
+            else:
+                newStr = newStr+separateStr[i]
+        return newStr
+    else:
+        return strToReplace
+
 def strHashNumberFormat(num):
     bases = NumBases(num)
     operations = ElementalOperations(num)
     digits = SignificantDigits(num)
-    return num+"#"+bases.getBase()+"#"+operations.getOperation()+"#"+digits.getNumSignificant()
+    return bases.getNum()+"#"+bases.getBase()+"#"+operations.getOperation()+"#"+digits.getNumSignificant()
+
+def __checkLettersInOperator(self, separateEcuation, isAnyLetter):
+        matrixes = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        for i in range(len(separateEcuation)-1):
+            lastBeforeOperator = separateEcuation[i][len(separateEcuation[i])-1]
+            firstAfterOperator = separateEcuation[i+1][i]
+            isBeforeOperatorLetter = lastBeforeOperator in matrixes
+            isAfterOperatorLetter = firstAfterOperator in matrixes
+            if not isAnyLetter:
+                if (isBeforeOperatorLetter and not isAfterOperatorLetter) or (not isBeforeOperatorLetter and isAfterOperatorLetter): 
+                    return False
+            else:
+                if firstAfterOperator != "0":
+                    if isBeforeOperatorLetter or isAfterOperatorLetter:
+                        return False
+                else:
+                    return False
+        return True
 
 def convertToDecimal(arFinal):
     for i in range(len(arFinal)):
@@ -43,101 +76,46 @@ def convertToDecimal(arFinal):
                         separateNumAttributes = arFinal[i][j].split("#")
                         conversion = BasesConversion(separateNumAttributes[0], separateNumAttributes[1])
 
-                        arFinal[i][j] = strHashNumberFormat(conversion.getNumPossiblyHex())
+                        #arFinal[i][j] = strHashNumberFormat(conversion.getNumPossiblyHex())
+                        arFinal[i][j] = float(conversion.getNumPossiblyHex())
+                    else:
+                        arFinal[i][j] = float(arFinal[i][j].split("#")[0])
+                else:
+                    arFinal[i][j] = 0
             except ValueError as e:
-                storeArchiveLog(f"ValueError/{e}/{arFinal[i][j]}")
+                storeArchiveLog(f"{e.__class__.__name__}/{arFinal[i][j]}/{e}")
             except Exception as e:
-                storeArchiveLog(f"{e}/{arFinal[i][j]}")
+                storeArchiveLog(f"{e.__class__.__name__}/{arFinal[i][j]}/{e}")   
 
-def __oneInOtherOneNotIn(compare1, compare2, compareInEcuation):
-    for n1 in compare1:
-        for n2 in compare2:
-            if n1 in compareInEcuation and n2 not in compareInEcuation:
-                possible = True
-            else:
-                possible = False
-                break
-        if not possible:
-            break
-    return possible
-
-def __checkLettersInOperator(separateEcuation, matrixes, isAnyLetter):
-    for i in range(len(separateEcuation)-1):
-        lastBeforeOperator = separateEcuation[i][len(separateEcuation[i])-1]
-        firstAfterOperator = separateEcuation[i+1][i]
-        isBeforeOperatorLetter = lastBeforeOperator in matrixes
-        isAfterOperatorLetter = firstAfterOperator in matrixes
-
-        if not isAnyLetter:
-            if (isBeforeOperatorLetter and not isAfterOperatorLetter) or (not isBeforeOperatorLetter and isAfterOperatorLetter): 
-                return False
-        else:
-            if firstAfterOperator != "0":
-                if isBeforeOperatorLetter or isAfterOperatorLetter:
-                    return False
-            else:
-                return False
-    return True
-
-def __checkSpecialChars(ecuation):
-    specialChars = "|°¬!#$%&?¡'¿´;:_¨* "
-    for i in ecuation:
-        if i.lower() in specialChars:
-            return False
-    return True
-    
-
-def checkIsEcuationResolvable(ecuation, numberOfArchives):
-    matrixes = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    numbers = "0123456789"
-    resolvable = True
-
-    if not __checkSpecialChars(ecuation):
-        return False
-    if "(" in ecuation and ")" not in ecuation or ")" in ecuation and "(" not in ecuation:
-        return False
-    else:
-        #Casos con solo o números o matrices(sin división)
-        allNumbers = __oneInOtherOneNotIn(numbers, matrixes, ecuation)
-        allMatrixNoDiv = __oneInOtherOneNotIn(matrixes, numbers, ecuation) and "/" not in ecuation
-        resolvable = allNumbers or allMatrixNoDiv
-        if resolvable:
-            return resolvable
-        
-        resolvable = True
-        #Caso con suma
-        if "+" in ecuation:
-            separateEcuation = ecuation.split("+")
-            resolvable = __checkLettersInOperator(separateEcuation, matrixes, False)
-        if not resolvable:
-            return resolvable
-        #Caso con resta
-        if "-" in ecuation:
-            separateEcuation = ecuation.split("-")
-            resolvable = __checkLettersInOperator(separateEcuation, matrixes, False)
-        if not resolvable:
-            return resolvable
-        #Caso con división
-        if "/" in ecuation:
-            separateEcuation = ecuation.split("/")
-            resolvable = __checkLettersInOperator(separateEcuation, matrixes, True)
-        if not resolvable:
-            return resolvable
-        #Revisar si el número de archivos es menor al de matrices en la ecuación
-        countEcuationMatrixes = 0
-        for letter in matrixes:
-            if letter in ecuation:
-                countEcuationMatrixes += 1
-        if countEcuationMatrixes < numberOfArchives:
-            resolvable = False
-
-        return resolvable        
-
-def solveEcuations(arFinal, arEcuation):
+def checkEcuations(arFinal, arEcuation):
     convertToDecimal(arFinal)
     for ecuation in arEcuation:
-        if checkIsEcuationResolvable(ecuation, len(arFinal)):
-            #Proceso de resolución
-            pass 
-        else:
-            storeArchiveLog(f"La ecuación no es valida/{ecuation}") #Explicar con Notacion por que falló
+        try:
+            currentEcuation = CheckEcuationResolvable(ecuation, len(arFinal))
+            if currentEcuation.getResolvable():
+                #result = __solveEcuationProccess(ecuation, arFinal)
+                pass
+            else:
+                storeArchiveLog(f"{currentEcuation.getCientificNotation()}/{ecuation}")
+        except ValueError as e:
+            storeArchiveLog(f"{e.__class__.__name__}/{ecuation}/{e}")
+'''''''''''
+def __solveBrackets(insideBrackets, arFinal):
+    pass
+
+def __solveEcuationProccess(ecuation, arFinal):
+    if "(" in ecuation:
+        countEcuationBrackets = 0
+        for bracket in ecuation:
+            if bracket == "(":
+                countEcuationBrackets += 1
+        for i in range(countEcuationBrackets):
+            openBracket = ecuation.split("(")
+            openBracket = openBracket[i+1]
+            outsideBracket = openBracket[i]
+            closedBracket = openBracket.split(")")
+            insideBrackets = closedBracket[i]
+            outsideBracket = outsideBracket+"RES"+i+closedBracket[i+1]
+
+            bracketsResult = __solveBrackets(insideBrackets, arFinal)
+'''''''''''
