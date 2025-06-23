@@ -53,7 +53,7 @@ class BasesConversion:
         for i in range(len(num)):
             lastToFirst = len(num)-1-i
             if num[lastToFirst]!="0":
-                dec = 2**i + dec
+                dec = str(2**i) + dec
         return dec
 
     def __utilHexToDecimal(self, num):
@@ -63,7 +63,7 @@ class BasesConversion:
             lastToFirst = len(num)-1-i
             for j in range(len(hex)):
                 if hex[j].lower==num[lastToFirst]:
-                    decimal = j*16**i + decimal
+                    decimal = str(j*16**i) + decimal
         return decimal
 
     def __utilValFormatBases(self, bases):

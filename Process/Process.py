@@ -38,16 +38,16 @@ def convertToDecimal(arFinal):
     for i in range(len(arFinal)):
         for j in range(len(arFinal[i])):
             try:
-                if arFinal[i][j] != "nan":
+                if str(arFinal[i][j]) != "nan":
                     if "Binario" not in arFinal[i][j] and "Decimal" not in arFinal[i][j]:
                         separateNumAttributes = arFinal[i][j].split("#")
                         conversion = BasesConversion(separateNumAttributes[0], separateNumAttributes[1])
 
                         arFinal[i][j] = strHashNumberFormat(conversion.getNumPossiblyHex())
             except ValueError as e:
-                storeArchiveLog(f"No es un numero valido: {arFinal[i][j]} - Error: {e}")
+                storeArchiveLog(f"ValueError/{e}/{arFinal[i][j]}")
             except Exception as e:
-                storeArchiveLog(f"Error inesperado al procesar {arFinal[i][j]}: {e}")
+                storeArchiveLog(f"{e}/{arFinal[i][j]}")
 
 def __oneInOtherOneNotIn(compare1, compare2, compareInEcuation):
     for n1 in compare1:
@@ -72,7 +72,10 @@ def __checkLettersInOperator(separateEcuation, matrixes, isAnyLetter):
             if (isBeforeOperatorLetter and not isAfterOperatorLetter) or (not isBeforeOperatorLetter and isAfterOperatorLetter): 
                 return False
         else:
-            if isBeforeOperatorLetter or isAfterOperatorLetter:
+            if firstAfterOperator != "0":
+                if isBeforeOperatorLetter or isAfterOperatorLetter:
+                    return False
+            else:
                 return False
     return True
 
@@ -137,5 +140,4 @@ def solveEcuations(arFinal, arEcuation):
             #Proceso de resolución
             pass 
         else:
-            storeArchiveLog(f"No es una ecuación valida: {ecuation}")
-
+            storeArchiveLog(f"La ecuación no es valida/{ecuation}") #Explicar con Notacion por que falló
