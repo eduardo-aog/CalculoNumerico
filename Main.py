@@ -1,20 +1,21 @@
 from Helpers.ConsultMain import consultMain
 from Repositories.ArchiveUtil import ArchiveUtil
 from Composables.storeMain import storeMain
+from Repositories.Logger import storeArchiveLog
 import os
 
 def Main():
-    storageRoute = os.path.dirname(os.path.abspath(__file__))+os.path.sep+"Storage"
-
     try:
+        storageRoute = os.path.dirname(os.path.abspath(__file__))+os.path.sep+"Storage"
         archive = ArchiveUtil(storageRoute)
     except(NotADirectoryError, FileNotFoundError) as e:
-        print(e)
-        return
+        storeArchiveLog(e+"")
+        exit()
 
-    arFinal, serialRead = consultMain(archive, "test_serial70.bin")
+    arFinal, errorPerArchive, archivesNames = consultMain(archive)
 
-    storeMain(archive, arFinal, serialRead)
+    storeMain(archive, arFinal, errorPerArchive, archivesNames)
 
-# Llamada a la funcion 
+
+
 Main()
