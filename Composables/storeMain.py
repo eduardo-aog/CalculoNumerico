@@ -1,13 +1,10 @@
 from Composables.storeArchive import storeData
+from Repositories.Logger import storeArchiveLog
 
-def storeMain(archive, arFinal, serialRead):
+def storeMain(archive, arFinal, errorPerArchive, archivesNames):
     if archive is None:
-        raise ValueError("No se puede almacenar en un archivo vacío")
-        
+        storeArchiveLog("No se puede almacenar en un archivo vacío")        
     if arFinal is None:
-        raise ValueError("No hay datos para almacenar")
-        
-    if serialRead is None:
-        raise ValueError("El nombre del archivo es inválido")
+        storeArchiveLog("No hay datos para almacenar")
 
-    storeData(archive, arFinal, serialRead)
+    storeData(archive, arFinal, errorPerArchive, archivesNames)
