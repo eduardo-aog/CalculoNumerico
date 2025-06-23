@@ -119,6 +119,52 @@ def create_data_matrix_from_bins(archive_util) -> Optional[np.ndarray]:
 
     return matriz
 
+#4 funcion luis 
+
+def process_special_bin_files(archive_util) -> Tuple[Optional[np.ndarray], Dict[str, str]]:
+    try:
+        all_bin_files = archive_util.getDirectoriesList()
+    except Exception as e:
+        print(f"Error al obtener archivos: {e}")
+        return None, {}
+
+    # Filtrar archivos .bin sin '#'
+    special_files = {}
+    for file in all_bin_files:
+        if not file.endswith(".bin"):
+            continue
+            
+        try:
+            content = archive_util.getArchive(file)
+            if content is None:
+                continue
+                
+            # Unificar contenido a string
+            text_content = '\n'.join(content) if not isinstance(content, str) else content
+            
+            if '#' not in text_content:
+                special_files[file] = text_content.strip()
+                
+        except Exception as e:
+            print(f"Error procesando {file}: {e}")
+    
+    # Crear matriz si hay archivos especiales
+    if not special_files:
+        return None, special_files
+    
+    # Matriz: filas = archivos, 1 columna con contenido completo
+    matriz = np.empty((len(special_files), 1), dtype=object)
+    for i, (file, content) in enumerate(special_files.items()):
+        matriz[i, 0] = content
+    
+    return matriz, special_files
+
+
+
+
+
+
+
 
 
 
