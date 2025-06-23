@@ -9,33 +9,24 @@ class SignificantDigits:
     def __utilCountDigits(self): 
         countSignificant = 0
         countSignificant2 = 0 #Cuenta cifras significativas estilo notacion cientifica
-        significant = False
-        significant2 = True #Verifica notación cientifica ejemplo(7000, 2000, etc)
-        flag = False #Verificar notación cientifica x2  
+        significant2 = False #Verifica notación cientifica ejemplo(7000, 2000, etc)
+        flag = False 
         for i in self.__digit:
-            if i != "0" and i != "." and i != "," and i != "-": 
-                significant = True
-            if significant:
-                if i == "." or i == "," or i == "-":
-                    significant2 = False
-                    continue
-                if i == "0":
-                    flag = True
-                if flag:
-                    countSignificant2 += 1  
-                countSignificant += 1
-                if i != "0" and flag:
-                    flag = False
-                    significant2 = False
-            else:
-                if i != "0":
-                    significant2 = False
-        if significant and significant2:
+            if i == "." or i == "," or i == "-":
+                significant2 = False
+                continue
+            if i == "0":
+                flag = True
+                countSignificant2 += 1  
+                significant2 = True
+            if i != "0" and flag:
+                flag = False
+                significant2 = False
+            countSignificant += 1
+        if significant2:
             self.__numSignificant = "Cifras significantes: "+str(countSignificant)+" o "+str(countSignificant2)
-        elif significant:
-            self.__numSignificant = "Cifras significantes: "+str(countSignificant)
         else:
-            self.__numSignificant = "No hay cifras significativas"
+            self.__numSignificant = "Cifras significantes: "+str(countSignificant)
 
     def __utilValDigit(self, digit):
         if digit == None:
