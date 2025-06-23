@@ -26,8 +26,13 @@ class SignificantDigits:
             elif i != "0":
                 significant2 = False
                 countSignificant += 1
+            else:
+                countSignificant += 1
+                flag = True
         if significant2:
-            self.__numSignificant = "Cifras significantes: "+str(countSignificant+countSignificant2)+" o "+str(countSignificant2)
+            self.__numSignificant = "Cifras significantes: "+str(countSignificant)+" o "+str(countSignificant2)
+        elif "." in self.__digit:
+            self.__numSignificant = "Cifras significantes: "+str(countSignificant-countSignificant2)
         else:
             self.__numSignificant = "Cifras significantes: "+str(countSignificant)
 
