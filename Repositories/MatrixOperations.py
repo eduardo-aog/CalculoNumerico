@@ -1,114 +1,7 @@
 import numpy as np
 
 class MatrixOperations:
-    def __utilValMatrixFormat(self, matrix_str):
-        """Valida el formato de una matriz representada como string"""
-        if matrix_str == None:
-            return False
-        
-        if len(matrix_str) < 2 or matrix_str[0] != '[' or matrix_str[-1] != ']':
-            return False
-        
-        content = matrix_str[1:-1]
-        if len(content) == 0:
-            return False
-        
-        rows = self.__utilSplitMatrixRows(content)
-        if len(rows) == 0:
-            return False
-        
-        first_row_length = len(self.__utilSplitRowElements(rows[0]))
-        for row in rows:
-            elements = self.__utilSplitRowElements(row)
-            if len(elements) != first_row_length:
-                return False
-            for element in elements:
-                if not self.__utilValNum(element.strip()):
-                    return False
-        
-        return True
-
-    def __utilSplitMatrixRows(self, content):
-        """Divide el contenido de una matriz en filas"""
-        rows = []
-        current_row = ""
-        bracket_count = 0
-        
-        for char in content:
-            if char == '[':
-                bracket_count += 1
-            elif char == ']':
-                bracket_count -= 1
-            
-            current_row += char
-            
-            if bracket_count == 0 and char == ']':
-                rows.append(current_row)
-                current_row = ""
-        
-        return rows
-
-    def __utilSplitRowElements(self, row):
-        """Divide una fila en elementos individuales"""
-        elements = []
-        current_element = ""
-        bracket_count = 0
-        
-        for char in row:
-            if char == '[':
-                bracket_count += 1
-            elif char == ']':
-                bracket_count -= 1
-            elif char == ',' and bracket_count == 1:
-                elements.append(current_element)
-                current_element = ""
-                continue
-            
-            current_element += char
-        
-        if current_element:
-            elements.append(current_element)
-        
-        return elements
-
-    def __utilMatrixToArray(self, matrix_str):
-        """Convierte una matriz en string a array bidimensional"""
-        if not self.__utilValMatrixFormat(matrix_str):
-            return None
-        
-        content = matrix_str[1:-1]
-        rows = self.__utilSplitMatrixRows(content)
-        matrix = []
-        
-        for row in rows:
-            elements = self.__utilSplitRowElements(row)
-            row_array = []
-            for element in elements:
-                row_array.append(float(element.strip()))
-            matrix.append(row_array)
-        
-        return matrix
-
-    def __utilArrayToMatrix(self, matrix_array):
-        """Convierte un array bidimensional a string de matriz"""
-        if not matrix_array or len(matrix_array) == 0:
-            return "[]"
-        
-        matrix_str = "["
-        for i, row in enumerate(matrix_array):
-            matrix_str += "["
-            for j, element in enumerate(row):
-                matrix_str += str(element)
-                if j < len(row) - 1:
-                    matrix_str += ", "
-            matrix_str += "]"
-            if i < len(matrix_array) - 1:
-                matrix_str += ", "
-        matrix_str += "]"
-        
-        return matrix_str
-
-    def __utilMatrixSum(matrix1: np.ndarray, matrix2: np.ndarray):
+    def __utilMatrixSum(self, matrix1: np.ndarray, matrix2: np.ndarray):
         """Suma dos matrices"""
         rows1 = len(matrix1)
         cols1 = len(matrix1[0])
@@ -122,7 +15,7 @@ class MatrixOperations:
                 result[i, j] = matrix1[i, j] + matrix2[i, j]
         return result
 
-    def __utilMatrixMinus(matrix1: np.ndarray, matrix2: np.ndarray):
+    def __utilMatrixMinus(self, matrix1: np.ndarray, matrix2: np.ndarray):
         """Resta dos matrices"""
         rows1 = len(matrix1)
         cols1 = len(matrix1[0])
@@ -136,7 +29,7 @@ class MatrixOperations:
                 result[i, j] = matrix1[i, j] - matrix2[i, j]
         return result
 
-    def __utilMatrixMult(matrix1: np.ndarray, matrix2: np.ndarray):
+    def __utilMatrixMult(self, matrix1: np.ndarray, matrix2: np.ndarray):
         """Multiplica dos matrices"""
         rows1 = len(matrix1)
         cols1 = len(matrix1[0])
@@ -153,7 +46,7 @@ class MatrixOperations:
                 result[i, j] = sum_val
         return result
 
-    def __utilMatrixScalarMult(matrix: np.ndarray, scalar: float):
+    def __utilMatrixScalarMult(self, matrix: np.ndarray, scalar: float):
         """Multiplica una matriz por un escalar"""
         rows = len(matrix)
         cols = len(matrix[0])
@@ -163,7 +56,7 @@ class MatrixOperations:
                 result[i, j] = matrix[i, j] * scalar
         return result
 
-    def __utilMatrixTranspose(matrix: np.ndarray):
+    def __utilMatrixTranspose(self, matrix: np.ndarray):
         """Calcula la transpuesta de una matriz"""
         rows = len(matrix)
         cols = len(matrix[0])
@@ -173,7 +66,7 @@ class MatrixOperations:
                 result[j, i] = matrix[i, j]
         return result
 
-    def __utilMatrixDeterminant(matrix: np.ndarray):
+    def __utilMatrixDeterminant(self, matrix: np.ndarray):
         """Calcula el determinante de una matriz cuadrada"""
         n = len(matrix)
         for row in matrix:
@@ -202,7 +95,7 @@ class MatrixOperations:
                     temp[k, j] -= factor * temp[i, j]
         return det
 
-    def __utilMatrixInverse(matrix: np.ndarray):
+    def __utilMatrixInverse(self, matrix: np.ndarray):
         """Calcula la inversa de una matriz cuadrada"""
         n = len(matrix)
         for row in matrix:
@@ -238,7 +131,7 @@ class MatrixOperations:
                 inv[i, j] = aug[i, n+j]
         return inv
 
-    def __utilMatrixRank(matrix: np.ndarray):
+    def __utilMatrixRank(self, matrix: np.ndarray):
         """Calcula el rango de una matriz"""
         m = len(matrix)
         n = len(matrix[0])
@@ -264,7 +157,7 @@ class MatrixOperations:
                             temp[k, p] -= factor * temp[k, i]
         return rank
 
-    def __utilMatrixEigenvalues(matrix: np.ndarray, max_iter=100, tol=1e-10):
+    def __utilMatrixEigenvalues(self, matrix: np.ndarray, max_iter=100, tol=1e-10):
         """Calcula los valores propios de una matriz cuadrada (método de potencias)"""
         n = len(matrix)
         for row in matrix:
