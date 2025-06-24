@@ -1,10 +1,10 @@
-from Composables.storeArchive import storeData
-from Repositories.Logger import storeArchiveLog
+from Composables.storeArchive import storeDataNumbers
+from Repositories.Logger import Logger
 
 def storeMain(archive, arFinal, errorPerArchive, archivesNames):
     if archive is None:
-        storeArchiveLog("No se puede almacenar en un archivo vacío")        
+        Logger.storeArchiveLog("No se puede almacenar en un archivo vacío")        
     if arFinal is None:
-        storeArchiveLog("No hay datos para almacenar")
+        Logger.storeArchiveLog("No hay datos para almacenar")
 
-    storeData(archive, arFinal, errorPerArchive, archivesNames)
+    storeDataNumbers(archive, arFinal, errorPerArchive, archivesNames)
