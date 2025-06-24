@@ -4,31 +4,10 @@ from Repositories.ElementalOperations import ElementalOperations
 from Repositories.SignificantDigits import SignificantDigits
 from Repositories.CheckEcuationResolvable import CheckEcuationResolvable
 from Repositories.MatrixOperations import MatrixOperations
-from Repositories.Logger import storeArchiveLog
-
-def aproxValue(values):
-    if values != None:
-        sum = 0
-        for i in values:
-            for k in i:
-                sum += k
-        average = sum / 12
-        return average
-    else:
-        print("Datos nulos. Fin del programa")
-
-def exactValue(values):
-    if values != None:
-        sum = 0
-        ki = 0
-        for i in values:
-            for k in i:
-                ki = k+0.01
-                sum += ki
-        average = sum / 12
-        return average
-    else:
-        print("Datos nulos. Fin del programa")
+from Repositories.GaussJordan import GaussJordan
+from Repositories.GaussSeidel import GaussSeidel
+from Repositories.Logger import Logger
+import numpy
 
 def replaceString(oldChar, newChar, strToReplace):
     newStr = ""
@@ -49,23 +28,15 @@ def strHashNumberFormat(num):
     digits = SignificantDigits(num)
     return bases.getNum()+"#"+bases.getBase()+"#"+operations.getOperation()+"#"+digits.getNumSignificant()
 
-def __checkLettersInOperator(self, separateEcuation, isAnyLetter):
-        matrixes = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        for i in range(len(separateEcuation)-1):
-            lastBeforeOperator = separateEcuation[i][len(separateEcuation[i])-1]
-            firstAfterOperator = separateEcuation[i+1][i]
-            isBeforeOperatorLetter = lastBeforeOperator in matrixes
-            isAfterOperatorLetter = firstAfterOperator in matrixes
-            if not isAnyLetter:
-                if (isBeforeOperatorLetter and not isAfterOperatorLetter) or (not isBeforeOperatorLetter and isAfterOperatorLetter): 
-                    return False
-            else:
-                if firstAfterOperator != "0":
-                    if isBeforeOperatorLetter or isAfterOperatorLetter:
-                        return False
-                else:
-                    return False
-        return True
+def emptyVector(space, fill=0):
+    emptyV = numpy.empty(space, dtype=object)
+    emptyV.fill(fill)
+    return emptyV
+
+def emptyMatrix(space1, space2, fill=0):
+    emptyM = numpy.empty((space1, space2), dtype=object)
+    emptyM.fill(fill)
+    return emptyM
 
 def convertToDecimal(arFinal):
     for i in range(len(arFinal)):
@@ -76,46 +47,53 @@ def convertToDecimal(arFinal):
                         separateNumAttributes = arFinal[i][j].split("#")
                         conversion = BasesConversion(separateNumAttributes[0], separateNumAttributes[1])
 
-                        #arFinal[i][j] = strHashNumberFormat(conversion.getNumPossiblyHex())
                         arFinal[i][j] = float(conversion.getNumPossiblyHex())
                     else:
                         arFinal[i][j] = float(arFinal[i][j].split("#")[0])
                 else:
                     arFinal[i][j] = 0
             except ValueError as e:
-                storeArchiveLog(f"{e.__class__.__name__}/{arFinal[i][j]}/{e}")
+                Logger.storeArchiveLog(f"{e.__class__.__name__}/{arFinal[i][j]}/{e}")
             except Exception as e:
-                storeArchiveLog(f"{e.__class__.__name__}/{arFinal[i][j]}/{e}")   
+                Logger.storeArchiveLog(f"{e.__class__.__name__}/{arFinal[i][j]}/{e}")   
 
-def checkEcuations(arFinal, arEcuation):
+def checkEcuations(arFinal:numpy.array, arEcuation:numpy.array):
+    i = 0
     convertToDecimal(arFinal)
+    results = numpy.empty((len(arEcuation[0]), 1), dtype=object)
     for ecuation in arEcuation:
         try:
             currentEcuation = CheckEcuationResolvable(ecuation, len(arFinal))
             if currentEcuation.getResolvable():
-                #result = __solveEcuationProccess(ecuation, arFinal)
-                pass
+                results[i] = ecuation
             else:
-                storeArchiveLog(f"{currentEcuation.getCientificNotation()}/{ecuation}")
+                Logger.storeArchiveLog(f"{currentEcuation.getCientificNotation()}/{ecuation}")
+            i += 1
         except ValueError as e:
-            storeArchiveLog(f"{e.__class__.__name__}/{ecuation}/{e}")
-'''''''''''
-def __solveBrackets(insideBrackets, arFinal):
-    pass
+            Logger.storeArchiveLog(f"{e.__class__.__name__}/{ecuation}/{e}")
+    results = __gaussJordanSeidel(results)
+    return results
 
-def __solveEcuationProccess(ecuation, arFinal):
-    if "(" in ecuation:
-        countEcuationBrackets = 0
-        for bracket in ecuation:
-            if bracket == "(":
-                countEcuationBrackets += 1
-        for i in range(countEcuationBrackets):
-            openBracket = ecuation.split("(")
-            openBracket = openBracket[i+1]
-            outsideBracket = openBracket[i]
-            closedBracket = openBracket.split(")")
-            insideBrackets = closedBracket[i]
-            outsideBracket = outsideBracket+"RES"+i+closedBracket[i+1]
+def getInputJordanSeidel(text):
+    while True:
+        try:
+            written = int(input(text))
+            if written!=0 and written!=1:
+                print("Entrada no valida ingresa 0 o 1")
+            else:
+                return written
+        except ValueError:
+            print("Entrada no valida ingresa un número entero")
 
-            bracketsResult = __solveBrackets(insideBrackets, arFinal)
-'''''''''''
+def __gaussJordanSeidel(results:numpy.array):
+    optionJordan = getInputJordanSeidel("Realizar operación con Gauss Jordan(0) o Seidel(1): ")
+    for i in range(len(results)):
+        matrixB = emptyVector(len(results[i]), 1)
+        if optionJordan==0:
+            amplifiedMatrix = GaussJordan.pivoteafila(results[i], matrixB)
+            amplifiedMatrix = GaussJordan.gauss_eliminaAdelante(amplifiedMatrix)
+            results[i] = GaussJordan.gauss_eliminaAtras(amplifiedMatrix)
+        else:
+            amplifiedMatrix = GaussSeidel.pivoteaFila(results[i], matrixB)
+            results[i] = GaussSeidel.gaussSeidel(results[i], matrixB, amplifiedMatrix)
+    return results
