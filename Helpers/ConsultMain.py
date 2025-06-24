@@ -1,16 +1,13 @@
-from Helpers.ConsultData import linesInArchive, readContent, readNumbersData, findBinArchive, createDataMatrixFromBins
-from Repositories.Logger import storeArchiveLog
+from Helpers.ConsultData import readNumbersData, createDataMatrixFromBins, processSpecialBinFiles
+from Repositories.Logger import Logger
 
 def consultMain(archive):
     if archive is None:
-        storeArchiveLog("No se puede leer un archivo vacio")
+        Logger.storeArchiveLog("No se puede leer un archivo vacio")
         exit()
 
     #Guarda el contenido y al final el nombre de donde estaba
     binArchives, binFilesNames = createDataMatrixFromBins(archive) 
-
-    #nameArchive = findBinArchive(archive)
-    #lines = linesInArchive(archive.getArchive(nameArchive))
-    #textData = readContent(archive.getArchive(nameArchive), lines)
+    ecuationMatrix = processSpecialBinFiles(archive)
     arFinal, errorPerArchive = readNumbersData(binArchives)
-    return arFinal, errorPerArchive, binFilesNames
+    return arFinal, errorPerArchive, binFilesNames, ecuationMatrix

@@ -1,33 +1,15 @@
 import numpy
-from Repositories.Logger import storeArchiveLog
-from Process.Process import strHashNumberFormat
-import os
-
-#funcion luis contar archivos .bin  1)
-def countBinFiles(storage_path: str, recursive: bool = True) -> int:
-    if not os.path.exists(storage_path):
-        raise ValueError(f"Directorio no encontrado: {storage_path}")
-    
-    count = 0
-    if recursive:
-        for root, _, files in os.walk(storage_path):
-            for file in files:
-                if file.endswith('.bin'):
-                    count += 1
-    else:
-        count = len([f for f in os.listdir(storage_path) 
-                   if f.endswith('.bin') and os.path.isfile(os.path.join(storage_path, f))])
-    
-    return count
+from Repositories.Logger import Logger
+from Process.Process import strHashNumberFormat, replaceString, emptyVector, emptyMatrix
 
 #funicion que cuenta el valor maximo de registros dentro de todos los archivos . bin 2)
-def findMaxRecords(archiveUtil):
+def __findMaxRecords(archiveUtil):
     if archiveUtil is None:
-        storeArchiveLog("ArchiveUtil no puede ser None")
+        Logger.storeArchiveLog("ArchiveUtil no puede ser None")
         exit()
     items = archiveUtil.getDirectoriesList()
     if not items:
-        storeArchiveLog("No se encontraron archivos")
+        Logger.storeArchiveLog("No se encontraron archivos")
         exit()
     
     recordCounts = {}
@@ -56,7 +38,7 @@ def findMaxRecords(archiveUtil):
                 maxFile = binFile
                 
         except Exception as e:
-            storeArchiveLog(f"Error al procesar {binFile}: {str(e)}")
+            Logger.storeArchiveLog(f"Error al procesar {binFile}: {str(e)}")
             recordCounts[binFile] = 0
     
     if maxRecords == -1:
@@ -69,7 +51,7 @@ def createDataMatrixFromBins(archiveUtil):
     try:
         allBinFiles = archiveUtil.getDirectoriesList()
     except Exception as e:
-        print(f"Error al obtener archivos: {e}")
+        print(f"{e.__class__.__name__}/{e}")
         return None
 
     # Filtrar archivos .bin sin usar listas
@@ -79,17 +61,17 @@ def createDataMatrixFromBins(archiveUtil):
             binFiles = numpy.append(binFiles, file)
 
     if binFiles.size == 0:
-        storeArchiveLog("No se encontraron archivos .bin")
+        Logger.storeArchiveLog("No se encontraron archivos .bin")
         return None
 
     # Obtener máximo número de registros y recuento por archivo
     try:
-        _, maxRegistros, _ = findMaxRecords(archiveUtil)
+        _, maxRegistros, _ = __findMaxRecords(archiveUtil)
     except Exception as e:
-        storeArchiveLog(f"No se pudo determinar el archivo con más registros: {e}")
+        Logger.storeArchiveLog(f"No se pudo determinar el archivo con más registros: {e}")
         return None
 
-    filas = binFiles.size
+    filas = binFiles.size 
     columnas = maxRegistros
     matriz = numpy.empty((filas, columnas), dtype=object)
     matriz.fill(numpy.nan)
@@ -100,76 +82,64 @@ def createDataMatrixFromBins(archiveUtil):
             if contenido is None:
                 continue
 
-
             text = '\n'.join(contenido) if not isinstance(contenido, str) else contenido
-            
-            registers = numpy.array(text.split('#'), dtype=object)
+            if "#" in text:
+                registers = numpy.array(text.split('#'), dtype=object)
 
-            for j in range(min(registers.size, columnas)):
-                matriz[i][j] = registers[j].strip()
-
+                for j in range(min(registers.size, columnas)):
+                    registers[j] = replaceString("\n\n","",registers[j])
+                    matriz[i][j] = replaceString(" ","",registers[j])
         except Exception as e:
-            storeArchiveLog(f"Error procesando archivo {binFiles[i]}: {e}")
+            Logger.storeArchiveLog(f"{e.__class__.__name__}/{binFiles[i]}/{e}")
 
     return matriz, binFiles
 
-def findBinArchive(archive):
-    if archive is None:
-        storeArchiveLog("No se puede encontrar un archivo vacio")
-        exit()
-    
-    items = archive.getDirectoriesList()
-    if not items:
-        storeArchiveLog("No se encontraron directorios")
-        exit()
-    
-    for i in items:
-        nameArchive = numpy.array(i.split("_"))
-        lastItem = len(nameArchive)-1
-        if "." in nameArchive[lastItem]:
-            if numpy.array(nameArchive[lastItem].split("."))[1]=="bin":
-                return i
+def processSpecialBinFiles(archiveUtil):
+    try:
+        allBinFiles = archiveUtil.getDirectoriesList()
+    except Exception as e:
+        Logger.storeArchiveLog(f"{e.__class__.__name__}/{e}")
+        return None
 
-def linesInArchive(archive):
-    if archive is None:
-        storeArchiveLog("No se puede leer un archivo vacio")
-        exit()
+    # Filtrar archivos .bin sin '#'
+    specialFiles = {}
+    for file in allBinFiles:
+        if not file.endswith(".bin"):
+            continue
+            
+        try:
+            content = archiveUtil.getArchive(file)
+            if content is None:
+                continue
+                
+            # Unificar contenido a string
+            textContent = '\n'.join(content) if not isinstance(content, str) else content      
+            
+            if '#' not in textContent:
+                textContent = replaceString(" ","",textContent)
+                specialFiles[file] = replaceString("\n\n",",",textContent).split(",")
+                
+        except Exception as e:
+            Logger.storeArchiveLog(f"{e.__class__.__name__}/{file}/{e}")
     
-    array = numpy.array([0, 0])
-    lines = numpy.array([])
-    n = 0
-    aux = 0
-
-    for i in archive:
-        n += 1
-        lines = numpy.array(i.split("#"))
-        if lines.size > aux:
-            aux = lines.size
-
-    array[0] = n #filas
-    array[1] = aux #columnas
-    return array
-
-def readContent(arrayContent):
-    if arrayContent.any == None:
-        storeArchiveLog("Object-Error: Un objeto es nulo")
-        exit()
+    # Crear matriz si hay archivos especiales
+    if not specialFiles:
+        return None
     
-    for i in arrayContent:
-        for j in range(len(arrayContent[i])):
-            if "\n" in arrayContent[i]:
-                arrayContent[i] = arrayContent[i].split("\n")[0]
-        
-    return arrayContent
+    # Matriz: filas = archivos, 1 columna con contenido completo
+    matriz = numpy.empty(len(specialFiles), dtype=object)
+    for i, (file, content) in enumerate(specialFiles.items()):
+        matriz[i] = content
+    
+    return numpy.array(matriz, specialFiles.keys())
+
 
 def readNumbersData(binArchives):
     if binArchives.any == None:
-        storeArchiveLog("Object-Error: Arreglo es nulo")
+        Logger.storeArchiveLog("Object-Error: Arreglo es nulo")
         exit()
-    errorPerArchive = numpy.empty(len(binArchives),dtype=object)
-    errorPerArchive.fill(0)                
-    arFinal = numpy.empty((len(binArchives), (len(binArchives[0]))), dtype=object)
-    arFinal.fill(numpy.nan)
+    errorPerArchive = emptyVector((len(binArchives), 0))     
+    arFinal = emptyMatrix(len(binArchives), len(binArchives[0], numpy.nan))               
     
     for i in range(len(binArchives)):
         for j in range(len(binArchives[i])):
@@ -179,10 +149,10 @@ def readNumbersData(binArchives):
                 else:
                     errorPerArchive[i] += 1
             except ValueError as e:
-                storeArchiveLog(f"{e}/{binArchives[i][j]}")
+                Logger.storeArchiveLog(f"{e.__class__.__name__}/{binArchives[i][j]}/{e}")
                 errorPerArchive[i] += 1
             except Exception as e:
-                storeArchiveLog(f"{e}/{binArchives[i][j]}")
+                Logger.storeArchiveLog(f"{e.__class__.__name__}/{binArchives[i][j]}/{e}")
                 errorPerArchive[i] += 1
 
     return arFinal, errorPerArchive
