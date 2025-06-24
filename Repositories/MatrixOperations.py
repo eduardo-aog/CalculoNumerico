@@ -1,49 +1,49 @@
 import numpy as np
 
 class MatrixOperations:
-    def __utilMatrixSum(self, matrix1: np.ndarray, matrix2: np.ndarray):
+    def __utilMatrixSum(self, matrixOne: np.ndarray, matrixTwo: np.ndarray):
         """Suma dos matrices"""
-        rows1 = len(matrix1)
-        cols1 = len(matrix1[0])
-        rows2 = len(matrix2)
-        cols2 = len(matrix2[0])
-        if rows1 != rows2 or cols1 != cols2:
+        rowsOne = len(matrixOne)
+        colsOne = len(matrixOne[0])
+        rowsTwo = len(matrixTwo)
+        colsTwo = len(matrixTwo[0])
+        if rowsOne != rowsTwo or colsOne != colsTwo:
             return False
-        result = np.zeros((rows1, cols1))
-        for i in range(rows1):
-            for j in range(cols1):
-                result[i, j] = matrix1[i, j] + matrix2[i, j]
+        result = np.zeros((rowsOne, colsOne))
+        for i in range(rowsOne):
+            for j in range(colsOne):
+                result[i, j] = matrixOne[i, j] + matrixTwo[i, j]
         return result
 
-    def __utilMatrixMinus(self, matrix1: np.ndarray, matrix2: np.ndarray):
+    def __utilMatrixMinus(self, matrixOne: np.ndarray, matrixTwo: np.ndarray):
         """Resta dos matrices"""
-        rows1 = len(matrix1)
-        cols1 = len(matrix1[0])
-        rows2 = len(matrix2)
-        cols2 = len(matrix2[0])
-        if rows1 != rows2 or cols1 != cols2:
+        rowsOne = len(matrixOne)
+        colsOne = len(matrixOne[0])
+        rowsTwo = len(matrixTwo)
+        colsTwo = len(matrixTwo[0])
+        if rowsOne != rowsTwo or colsOne != colsTwo:
             return False
-        result = np.zeros((rows1, cols1))
-        for i in range(rows1):
-            for j in range(cols1):
-                result[i, j] = matrix1[i, j] - matrix2[i, j]
+        result = np.zeros((rowsOne, colsOne))
+        for i in range(rowsOne):
+            for j in range(colsOne):
+                result[i, j] = matrixOne[i, j] - matrixTwo[i, j]
         return result
 
-    def __utilMatrixMult(self, matrix1: np.ndarray, matrix2: np.ndarray):
+    def __utilMatrixMult(self, matrixOne: np.ndarray, matrixTwo: np.ndarray):
         """Multiplica dos matrices"""
-        rows1 = len(matrix1)
-        cols1 = len(matrix1[0])
-        rows2 = len(matrix2)
-        cols2 = len(matrix2[0])
-        if cols1 != rows2:
+        rowsOne = len(matrixOne)
+        colsOne = len(matrixOne[0])
+        rowsTwo = len(matrixTwo)
+        colsTwo = len(matrixTwo[0])
+        if colsOne != rowsTwo:
             return False
-        result = np.zeros((rows1, cols2))
-        for i in range(rows1):
-            for j in range(cols2):
-                sum_val = 0
-                for k in range(cols1):
-                    sum_val += matrix1[i, k] * matrix2[k, j]
-                result[i, j] = sum_val
+        result = np.zeros((rowsOne, colsTwo))
+        for i in range(rowsOne):
+            for j in range(colsTwo):
+                sumVal = 0
+                for k in range(colsOne):
+                    sumVal += matrixOne[i, k] * matrixTwo[k, j]
+                result[i, j] = sumVal
         return result
 
     def __utilMatrixScalarMult(self, matrix: np.ndarray, scalar: float):
@@ -72,27 +72,27 @@ class MatrixOperations:
         for row in matrix:
             if len(row) != n:
                 return False
-        temp = np.zeros((n, n))
+        tempMatrix = np.zeros((n, n))
         for i in range(n):
             for j in range(n):
-                temp[i, j] = matrix[i, j]
+                tempMatrix[i, j] = matrix[i, j]
         det = 1
         for i in range(n):
-            max_row = i
+            maxRow = i
             for k in range(i+1, n):
-                if abs(temp[k, i]) > abs(temp[max_row, i]):
-                    max_row = k
-            if temp[max_row, i] == 0:
+                if abs(tempMatrix[k, i]) > abs(tempMatrix[maxRow, i]):
+                    maxRow = k
+            if tempMatrix[maxRow, i] == 0:
                 return 0
-            if max_row != i:
+            if maxRow != i:
                 for j in range(n):
-                    temp[i, j], temp[max_row, j] = temp[max_row, j], temp[i, j]
+                    tempMatrix[i, j], tempMatrix[maxRow, j] = tempMatrix[maxRow, j], tempMatrix[i, j]
                 det *= -1
-            det *= temp[i, i]
+            det *= tempMatrix[i, i]
             for k in range(i+1, n):
-                factor = temp[k, i] / temp[i, i]
+                factor = tempMatrix[k, i] / tempMatrix[i, i]
                 for j in range(i, n):
-                    temp[k, j] -= factor * temp[i, j]
+                    tempMatrix[k, j] -= factor * tempMatrix[i, j]
         return det
 
     def __utilMatrixInverse(self, matrix: np.ndarray):
@@ -101,96 +101,96 @@ class MatrixOperations:
         for row in matrix:
             if len(row) != n:
                 return False
-        aug = np.zeros((n, 2*n))
+        augMatrix = np.zeros((n, 2*n))
         for i in range(n):
             for j in range(n):
-                aug[i, j] = matrix[i, j]
+                augMatrix[i, j] = matrix[i, j]
             for j in range(n):
-                aug[i, n+j] = 1 if i == j else 0
+                augMatrix[i, n+j] = 1 if i == j else 0
         for i in range(n):
-            max_row = i
+            maxRow = i
             for k in range(i+1, n):
-                if abs(aug[k, i]) > abs(aug[max_row, i]):
-                    max_row = k
-            if aug[max_row, i] == 0:
+                if abs(augMatrix[k, i]) > abs(augMatrix[maxRow, i]):
+                    maxRow = k
+            if augMatrix[maxRow, i] == 0:
                 return False
-            if max_row != i:
+            if maxRow != i:
                 for j in range(2*n):
-                    aug[i, j], aug[max_row, j] = aug[max_row, j], aug[i, j]
-            pivot = aug[i, i]
+                    augMatrix[i, j], augMatrix[maxRow, j] = augMatrix[maxRow, j], augMatrix[i, j]
+            pivot = augMatrix[i, i]
             for j in range(2*n):
-                aug[i, j] /= pivot
+                augMatrix[i, j] /= pivot
             for k in range(n):
                 if k != i:
-                    factor = aug[k, i]
+                    factor = augMatrix[k, i]
                     for j in range(2*n):
-                        aug[k, j] -= factor * aug[i, j]
-        inv = np.zeros((n, n))
+                        augMatrix[k, j] -= factor * augMatrix[i, j]
+        invMatrix = np.zeros((n, n))
         for i in range(n):
             for j in range(n):
-                inv[i, j] = aug[i, n+j]
-        return inv
+                invMatrix[i, j] = augMatrix[i, n+j]
+        return invMatrix
 
     def __utilMatrixRank(self, matrix: np.ndarray):
         """Calcula el rango de una matriz"""
         m = len(matrix)
         n = len(matrix[0])
-        temp = np.zeros((m, n))
+        tempMatrix = np.zeros((m, n))
         for i in range(m):
             for j in range(n):
-                temp[i, j] = matrix[i, j]
+                tempMatrix[i, j] = matrix[i, j]
         rank = 0
-        row_selected = [False] * m
+        rowSelected = [False] * m
         for i in range(n):
             j = 0
             while j < m:
-                if not row_selected[j] and abs(temp[j, i]) > 1e-10:
+                if not rowSelected[j] and abs(tempMatrix[j, i]) > 1e-10:
                     break
                 j += 1
             if j < m:
                 rank += 1
-                row_selected[j] = True
+                rowSelected[j] = True
                 for p in range(n):
                     if p != i:
-                        factor = temp[j, p] / temp[j, i]
+                        factor = tempMatrix[j, p] / tempMatrix[j, i]
                         for k in range(m):
-                            temp[k, p] -= factor * temp[k, i]
+                            tempMatrix[k, p] -= factor * tempMatrix[k, i]
         return rank
 
-    def __utilMatrixEigenvalues(self, matrix: np.ndarray, max_iter=100, tol=1e-10):
+    def __utilMatrixEigenvalues(self, matrix: np.ndarray, maxIter=100, tol=1e-10):
         """Calcula los valores propios de una matriz cuadrada (método de potencias)"""
         n = len(matrix)
         for row in matrix:
             if len(row) != n:
                 return False
-        b_k = np.ones((n, 1))
-        for _ in range(max_iter):
-            b_k1 = np.zeros((n, 1))
+        bK = np.ones((n, 1))
+        for _ in range(maxIter):
+            bK1 = np.zeros((n, 1))
             for i in range(n):
                 for j in range(n):
-                    b_k1[i, 0] += matrix[i, j] * b_k[j, 0]
+                    bK1[i, 0] += matrix[i, j] * bK[j, 0]
             norm = 0
             for i in range(n):
-                norm += b_k1[i, 0] ** 2
+                norm += bK1[i, 0] ** 2
             norm = norm ** 0.5
             if norm == 0:
                 return 0
             for i in range(n):
-                b_k1[i, 0] /= norm
+                bK1[i, 0] /= norm
             close = True
             for i in range(n):
-                if abs(b_k[i, 0] - b_k1[i, 0]) > tol:
+                if abs(bK[i, 0] - bK1[i, 0]) > tol:
                     close = False
                     break
             if close:
                 break
-            b_k = b_k1
+            bK = bK1
         num = 0
         den = 0
         for i in range(n):
             for j in range(n):
-                num += b_k[i, 0] * matrix[i, j] * b_k[j, 0]
-            den += b_k[i, 0] ** 2
+                num += bK[i, 0] * matrix[i, j] * bK[j, 0]
+            den += bK[i, 0] ** 2
         return num / den
 
     def getMatrixOperations(self, matrix_str):
