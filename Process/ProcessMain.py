@@ -1,18 +1,7 @@
-from .Process import aproxValue
-from .Process import exactValue
-from Repositories.ErrorObj import Error
-from Repositories.AbsError import AbsoluteError
-from Repositories.RelError import RelativeError
+from .Process import checkEcuations
+from Composables.storeArchive import storeDataEcuations
 
-def ProcessMain(values): 
-    measuredValue = aproxValue(values)
-    realValue = exactValue(values)
-    errorObject = Error(measuredValue, realValue)
-    
-    absErrorObject = AbsoluteError(errorObject.measuredValue, errorObject.realValue)
-    absErrorCalc = absErrorObject.calcErrorAbs()
-    
-    relativeErrorObject = RelativeError(errorObject.measuredValue, errorObject.realValue)
-    relativeErrorCalc = relativeErrorObject.calcErrorRel()
-    
-    return measuredValue, realValue, absErrorCalc, relativeErrorCalc
+#[0] las ecuaciones [1]el nombre del archivo que se consiguio
+def processMain(archive, ecuationMatrix, arFinal): 
+    arrayResults = checkEcuations(arFinal, ecuationMatrix[0])
+    storeDataEcuations(archive, arrayResults, ecuationMatrix[1])

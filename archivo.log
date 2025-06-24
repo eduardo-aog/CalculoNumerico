@@ -1,0 +1,197 @@
+!!Error!!: No es un número válido: z - Error: Valor no permitido, no es un número (2025/06/21_16:40)
+!!Error!!: No es un numero valido: z - Error: Valor no permitido, no es un número (2025/06/21_16:44)
+!!Error!!: No es un numero valido: z - Error: Valor no permitido, no es un número (2025/06/21_16:45)
+!!Error!!: Error inesperado al procesar 10: unsupported operand type(s) for +: 'int' and 'str' (2025/06/21_16:49)
+!!Error!!: Error inesperado al procesar 20: unsupported operand type(s) for +: 'int' and 'str' (2025/06/21_16:49)
+!!Error!!: Error inesperado al procesar 101: unsupported operand type(s) for +: 'int' and 'str' (2025/06/21_16:49)
+!!Error!!: Error inesperado al procesar -2: unsupported operand type(s) for +: 'int' and 'str' (2025/06/21_16:49)
+!!Error!!: No es un numero valido: z - Error: Valor no permitido, no es un número (2025/06/21_16:49)
+!!Error!!: No es un numero valido: z - Error: Valor no permitido, no es un número (2025/06/21_16:50)
+!!Error!!: No es un numero valido: z - Error: Valor no permitido, no es un número (2025/06/21_16:51)
+!!Error!!: No es un numero valido: z - Error: Valor no permitido, no es un número (2025/06/21_16:52)
+!!Error!!: No es un numero valido: z - Error: Valor no permitido, no es un número (2025/06/21_16:54)
+!!Error!!: No es un numero valido: z - Error: Valor no permitido, no es un número (2025/06/21_16:56)
+!!Error!!: No es un numero valido: z - Error: Valor no permitido, no es un número (2025/06/21_16:57)
+!!Error!!: No es un numero valido: z - Error: Valor no permitido, no es un número (2025/06/21_17:01)
+!!Error!!: Error inesperado al procesar 10: 'SignificantDigits' object has no attribute '_SignificantDigits__numSignificant' (2025/06/21_23:23)
+!!Error!!: Error inesperado al procesar 20: 'SignificantDigits' object has no attribute '_SignificantDigits__numSignificant' (2025/06/21_23:23)
+!!Error!!: Error inesperado al procesar 101: 'SignificantDigits' object has no attribute '_SignificantDigits__numSignificant' (2025/06/21_23:23)
+!!Error!!: Error inesperado al procesar -2: 'SignificantDigits' object has no attribute '_SignificantDigits__numSignificant' (2025/06/21_23:23)
+!!Error!!: Error inesperado al procesar 1003: 'SignificantDigits' object has no attribute '_SignificantDigits__numSignificant' (2025/06/21_23:23)
+!!Error!!: Error inesperado al procesar 2900: 'SignificantDigits' object has no attribute '_SignificantDigits__numSignificant' (2025/06/21_23:23)
+!!Error!!: Error inesperado al procesar 4: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: No es un numero valido: t - Error: Valor no permitido, no es un número (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar e: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: No es un numero valido: s - Error: Valor no permitido, no es un número (2025/06/22_11:27)
+!!Error!!: No es un numero valido: t - Error: Valor no permitido, no es un número (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 2: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: No es un numero valido: _ - Error: Valor no permitido, no es un número (2025/06/22_11:27)
+!!Error!!: No es un numero valido: s - Error: Valor no permitido, no es un número (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar e: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: No es un numero valido: r - Error: Valor no permitido, no es un número (2025/06/22_11:27)
+!!Error!!: No es un numero valido: i - Error: Valor no permitido, no es un número (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar a: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: No es un numero valido: l - Error: Valor no permitido, no es un número (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 5: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 1: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: No es un numero valido: . - Error: Valor de fracción con formato no permitido (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar b: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: No es un numero valido: i - Error: Valor no permitido, no es un número (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 6: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 1: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 0: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 1: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 4: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 0: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 0: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: No es un numero valido: 
+ - Error: Valor no permitido, no es un número (2025/06/22_11:27)
+!!Error!!: No es un numero valido: 
+ - Error: Valor no permitido, no es un número (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 5: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 4: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 6: 'NoneType' object does not support item assignment (2025/06/22_11:27)
+!!Error!!: Error inesperado al procesar 4: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: No es un numero valido: t - Error: Valor no permitido, no es un número (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar e: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: No es un numero valido: s - Error: Valor no permitido, no es un número (2025/06/22_11:28)
+!!Error!!: No es un numero valido: t - Error: Valor no permitido, no es un número (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 2: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: No es un numero valido: _ - Error: Valor no permitido, no es un número (2025/06/22_11:28)
+!!Error!!: No es un numero valido: s - Error: Valor no permitido, no es un número (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar e: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: No es un numero valido: r - Error: Valor no permitido, no es un número (2025/06/22_11:28)
+!!Error!!: No es un numero valido: i - Error: Valor no permitido, no es un número (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar a: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: No es un numero valido: l - Error: Valor no permitido, no es un número (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 5: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 1: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: No es un numero valido: . - Error: Valor de fracción con formato no permitido (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar b: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: No es un numero valido: i - Error: Valor no permitido, no es un número (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 6: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 1: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 0: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 1: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 4: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 0: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 0: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: No es un numero valido: 
+ - Error: Valor no permitido, no es un número (2025/06/22_11:28)
+!!Error!!: No es un numero valido: 
+ - Error: Valor no permitido, no es un número (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 5: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 4: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 6: 'NoneType' object does not support item assignment (2025/06/22_11:28)
+!!Error!!: Error inesperado al procesar 4: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: Error inesperado al procesar 5: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: Error inesperado al procesar 6: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: Error inesperado al procesar 1: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: Error inesperado al procesar 0: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: Error inesperado al procesar 1: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: Error inesperado al procesar 4: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: Error inesperado al procesar 0: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: Error inesperado al procesar 0: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: No es un numero valido: 
+ - Error: Valor no permitido, no es un número (2025/06/22_11:31)
+!!Error!!: No es un numero valido: 
+ - Error: Valor no permitido, no es un número (2025/06/22_11:31)
+!!Error!!: Error inesperado al procesar 5: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: Error inesperado al procesar 4: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: Error inesperado al procesar 6: 'NoneType' object does not support item assignment (2025/06/22_11:31)
+!!Error!!: Error procesando archivo test2_serial51.bin: 'list' object has no attribute 'split' (2025/06/22_11:38)
+!!Error!!: Error procesando archivo test_serial70.bin: 'list' object has no attribute 'split' (2025/06/22_11:38)
+!!Error!!: Error procesando archivo test2_serial51.bin: 'list' object has no attribute 'split' (2025/06/22_11:38)
+!!Error!!: Error procesando archivo test_serial70.bin: 'list' object has no attribute 'split' (2025/06/22_11:38)
+ErrorSystemValues_2025/06/22_20:35_serial77 Error:[ValueError/Valor no permitido, no es un número/400
+
+50] 
+ErrorSystemValues_2025/06/22_20:35_serial33 Error:[ValueError/Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_20:35_serial19 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:35_serial101 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:35_serial93 Error:[ValueError/Valor no permitido, no es un número/2900
+
+20] 
+ErrorSystemValues_2025/06/22_20:37_serial65 Error:[Valor no permitido, no es un número/400
+
+50/c:\Users\Acer\OneDrive\Escritorio\GitHub\CalculoNumerico\Helpers\ConsultData.py] 
+ErrorSystemValues_2025/06/22_20:37_serial42 Error:[Valor no permitido, no es un número/z/c:\Users\Acer\OneDrive\Escritorio\GitHub\CalculoNumerico\Helpers\ConsultData.py] 
+ErrorSystemValues_2025/06/22_20:37_serial31 Error:['float' object is not iterable/nan/c:\Users\Acer\OneDrive\Escritorio\GitHub\CalculoNumerico\Helpers\ConsultData.py] 
+ErrorSystemValues_2025/06/22_20:37_serial77 Error:['float' object is not iterable/nan/c:\Users\Acer\OneDrive\Escritorio\GitHub\CalculoNumerico\Helpers\ConsultData.py] 
+ErrorSystemValues_2025/06/22_20:37_serial34 Error:[Valor no permitido, no es un número/2900
+
+20/c:\Users\Acer\OneDrive\Escritorio\GitHub\CalculoNumerico\Helpers\ConsultData.py] 
+ErrorSystemValues_2025/06/22_20:39_serial53 Error:[Valor no permitido, no es un número/400
+
+50] 
+ErrorSystemValues_2025/06/22_20:39_serial39 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_20:39_serial77 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:39_serial50 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:39_serial22 Error:[Valor no permitido, no es un número/2900
+
+20] 
+ErrorSystemValues_2025/06/22_20:44_serial58 Error:[Valor no permitido, no es un número/400
+
+50] 
+ErrorSystemValues_2025/06/22_20:44_serial54 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_20:44_serial42 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:44_serial83 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:44_serial30 Error:[Valor no permitido, no es un número/2900
+
+20] 
+ErrorSystemValues_2025/06/22_20:45_serial43 Error:[Valor no permitido, no es un número/400
+
+50] 
+ErrorSystemValues_2025/06/22_20:45_serial36 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_20:45_serial31 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:45_serial37 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:45_serial55 Error:[Valor no permitido, no es un número/2900
+
+20] 
+ErrorSystemValues_2025/06/22_20:46_serial80 Error:[Valor no permitido, no es un número/400
+
+50] 
+ErrorSystemValues_2025/06/22_20:46_serial24 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_20:46_serial64 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:46_serial2 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:46_serial90 Error:[Valor no permitido, no es un número/2900
+
+20] 
+ErrorSystemValues_2025/06/22_20:50_serial17 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_20:50_serial101 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:50_serial59 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:53_serial101 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_20:53_serial101 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:53_serial40 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:54_serial32 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_20:54_serial36 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:54_serial6 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:55_serial92 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_20:55_serial78 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:55_serial83 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:56_serial83 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_20:56_serial58 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_20:56_serial58 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_21:00_serial87 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_21:00_serial10 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_21:00_serial27 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_21:01_serial100 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_21:01_serial29 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_21:01_serial97 Error:['float' object is not iterable/nan] 
+ErrorSystemValues_2025/06/22_21:03_serial50 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_21:04_serial26 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_21:05_serial48 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_21:14_serial12 Error:[Valor no permitido, no es un número/z] 
+ErrorSystemValues_2025/06/22_21:15_serial16 Error:[Valor no permitido, no es un número/z/ValueError] 
+ErrorSystemValues_2025/06/22_21:34_serial46 Error:[ValueError/z/Valor no permitido, no es un número] 
+ErrorSystemValues_2025/06/22_21:35_serial31 Error:[ValueError/z/Valor no permitido, no es un número] 
+ErrorSystemValues_2025/06/23_00:19_serial93 Error:[ValueError/0,002000003/could not convert string to float: '0,002000003'] 
+ErrorSystemValues_2025/06/23_00:29_serial46 Error:[ValueError/0,002000003/could not convert string to float: '0,002000003'] 
+ErrorSystemValues_2025/06/23_00:30_serial1 Error:[ValueError/0,002000003/could not convert string to float: '0,002000003'] 
+ErrorSystemValues_2025/06/23_11:01_serial19 Error:[AttributeError/test2_serial51.bin/'_io.TextIOWrapper' object has no attribute 'strip'] 
+ErrorSystemValues_2025/06/23_11:01_serial40 Error:[AttributeError/testEcuations_serial6.bin/'_io.TextIOWrapper' object has no attribute 'strip'] 
+ErrorSystemValues_2025/06/23_11:01_serial15 Error:[AttributeError/test_serial70.bin/'_io.TextIOWrapper' object has no attribute 'strip'] 
+ErrorSystemValues_2025/06/23_11:18_serial16 Error:[ValueError/,0.01/Valor de fracción con formato no permitido] 
+ErrorSystemValues_2025/06/23_11:18_serial7 Error:[ValueError/,2900/Valor de fracción con formato no permitido] 
+ErrorSystemValues_2025/06/23_11:19_serial55 Error:[ValueError/#0.01/Valor no permitido, no es un número] 
+ErrorSystemValues_2025/06/23_11:19_serial50 Error:[ValueError/#2900/Valor no permitido, no es un número] 

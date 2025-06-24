@@ -1,7 +1,8 @@
 from Helpers.ConsultMain import consultMain
 from Repositories.ArchiveUtil import ArchiveUtil
 from Composables.storeMain import storeMain
-from Repositories.Logger import storeArchiveLog
+from Process.ProcessMain import processMain
+from Repositories.Logger import Logger
 import os
 
 def Main():
@@ -9,13 +10,13 @@ def Main():
         storageRoute = os.path.dirname(os.path.abspath(__file__))+os.path.sep+"Storage"
         archive = ArchiveUtil(storageRoute)
     except(NotADirectoryError, FileNotFoundError) as e:
-        storeArchiveLog(e+"")
+        Logger.storeArchiveLog(e+"")
         exit()
 
-    arFinal, errorPerArchive, archivesNames = consultMain(archive)
+    arFinal, errorPerArchive, archivesNames, ecuationMatrix = consultMain(archive)
 
     storeMain(archive, arFinal, errorPerArchive, archivesNames)
 
-
+    processMain(archive, ecuationMatrix, arFinal)
 
 Main()

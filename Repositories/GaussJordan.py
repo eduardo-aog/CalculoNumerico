@@ -119,38 +119,3 @@ class GaussJordan:
                 print(AB)
         X = np.copy(AB[:,ultcolumna])
         return(X)
-    
-    
-# Gauss-Jordan como funciones
-# Para implementarlo en el proyecto lo debo adaptar a objetos
-# Parametros que usa el constructor
-# Métodos de la clase:
-# 1. pivoteafila(A, B, vertabla=False)
-#          @param: A (sistema de ecuaciones), B (vector con resultados)
-#                  Con estos se hace la matriz aumentada AB
-# 2. gauss_eliminaAdelante(AB, vertabla=False)
-#          @param: AB (matriz aumentada)
-# 3. gauss_eliminaAtras(AB, vertabla=False)
-#          @param: AB (matriz aumentada)
-# En cada una de las funciones. vertabla: se usa para imprimir el procedimiento, true muestra, false no
-
-
-"""
-# Entrada de datos, debe de ir en el Main
-
-from Repositories.GaussJordan import GaussJordan
-import numpy as np
-
-A = np.array([[4,-1,1], [2,2,-1], [6,-2,3]])
-B = np.array([4,2,12])
-GaussObject = GaussJordan(A, B)
-
-print("Matriz A: ",GaussObject.getA())
-print("Matriz B: ",GaussObject.getB())
-
-AB = GaussObject.pivoteafila(GaussObject.getA(), GaussObject.getB(), vertabla=True)
-AB = GaussObject.gauss_eliminaAdelante(AB, vertabla=True)
-X = GaussObject.gauss_eliminaAtras(AB, vertabla=True)
-print("Solucion X: ")
-print(X)
-"""
