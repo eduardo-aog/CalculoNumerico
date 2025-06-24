@@ -1,18 +1,8 @@
 class CheckEcuationResolvable:
-    def __init__(self, ecuation, numberOfArchives):
-        self.__utilValNumber(numberOfArchives)
+    def __init__(self, ecuation):
         self.__utilValEcuationFormat(ecuation)
         self.__utilResolvable()
-
-    def  __utilValNumber(self, numberOfArchives):
-        if numberOfArchives == None:
-            raise ValueError("No se permite un valor nulo")
-        if type(numberOfArchives) != int:
-            raise ValueError("No se permite no entero")
-        if numberOfArchives < 1:
-            raise ValueError("No se permite un valor menor a uno")
-        self.__numberOfArchives = numberOfArchives
-    
+    #UN PARENTESIS
     def __utilValEcuationFormat(self, ecuation):
         if ecuation == None:
             raise ValueError("No se permite un valor nulo")
@@ -65,7 +55,7 @@ class CheckEcuationResolvable:
                     return False
         return True
     
-    def __countOperator(ecuation, operators):
+    def __countOperator(self, ecuation, operators):
         count = 0
         for value in ecuation:
             for n in operators:
@@ -73,39 +63,40 @@ class CheckEcuationResolvable:
                     count += 1
         return count  
     
-    def __separateBracketsProcess(self, ecuation, i):
+    def __separateBracketsProcess(self, ecuation):
         matrixes = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        if self.__countOperator(ecuation, matrixes)>0:
-            openBracket = ecuation.split("(")
-            openBracket = openBracket[i+1]
-            outsideBracket1 = openBracket[i]
-            closedBracket = openBracket.split(")")
-            insideBrackets = closedBracket[i]
-            outsideBracket = outsideBracket1+"A"+closedBracket[i+1]
-            return insideBrackets, outsideBracket
-        else:
-            openBracket = ecuation.split("(")
-            openBracket = openBracket[i+1]
-            outsideBracket1 = openBracket[i]
-            closedBracket = openBracket.split(")")
-            insideBrackets = closedBracket[i]
-            outsideBracket = outsideBracket1+"1"+closedBracket[i+1]
-            return insideBrackets, outsideBracket
+        outsideBracket = ""
+        for i in range(len(ecuation.split("("))-1):
+            if self.__countOperator(ecuation, matrixes)>0:
+                openBracket = ecuation.split("(")
+                openBracket1 = openBracket[i+1]
+                outsideBracket1 = openBracket[i]
+                closedBracket = openBracket1.split(")")
+                insideBrackets = closedBracket[i]
+                outsideBracket = outsideBracket+outsideBracket1+"A"+closedBracket[i]
+            else:
+                openBracket = ecuation.split("(")
+                openBracket = openBracket[i+1]
+                outsideBracket1 = openBracket[i]
+                closedBracket = openBracket.split(")")
+                insideBrackets = closedBracket[i]
+                outsideBracket = outsideBracket1+"1"+closedBracket[i+1]
+        return insideBrackets, outsideBracket
     
     def __isItResolvable(self):
-        if "(" in self.__ecuation:
+        if '(' in self.__ecuation:
             numberBrackets = self.__countOperator(self.__ecuation, "(")
             for i in range(numberBrackets):
                 if i==0:
-                    insideBrackets, outsideBracket = self.__separateBracketsProcess(self.__ecuation, i)                
+                    insideBrackets, outsideBracket = self.__separateBracketsProcess(self.__ecuation)              
                     resolvable, reason = self.__isEcuationResolvableProcess(insideBrackets)
                     if not resolvable:
                         return resolvable, reason
                 else:
-                    insideBrackets, outsideBracket = self.__separateBracketsProcess(outsideBracket, i)                
+                    insideBrackets, outsideBracket = self.__separateBracketsProcess(outsideBracket)          
                     resolvable, reason = self.__isEcuationResolvableProcess(insideBrackets)
                     if not resolvable:
-                        return resolvable, reason
+                        return resolvable, reason 
             resolvable, reason = self.__isEcuationResolvableProcess(outsideBracket)            
         else:
             resolvable, reason = self.__isEcuationResolvableProcess(self.__ecuation)
@@ -125,6 +116,23 @@ class CheckEcuationResolvable:
             return resolvable, "all num/matrix(no div)"
         
         resolvable = True
+        #Caso con división
+        if "/" in ecuation:
+            resolvable = self.__checkLettersInOperator(ecuation.split("/"), matrixes, True)
+        if not resolvable:
+            return resolvable, "not possible /(Div matrix or Div 0)"
+        #Caso con mult escalar
+        if "*" in ecuation:
+            resolvable = not self.__checkLettersInOperator(ecuation.split("*"), matrixes, False)
+            ecuation = self.__orderScalarMult(ecuation)
+            print(ecuation)
+        if not resolvable:
+            return resolvable, "not possible *Mult scalar to matrix"
+        #Caso mult vectorial
+        if "x" in ecuation:
+            resolvable = self.__checkLettersInOperator(ecuation.split("x"), numbers, False)
+        if not resolvable:
+            return resolvable, "not possible xMult vect to num"
         #Caso con suma
         if "+" in ecuation:
             resolvable = self.__checkLettersInOperator(ecuation.split("+"), matrixes, False)
@@ -135,44 +143,58 @@ class CheckEcuationResolvable:
             resolvable = self.__checkLettersInOperator(ecuation.split("-"), matrixes, False)
         if not resolvable:
             return resolvable, "not possible -"
-        #Caso con división
-        if "/" in ecuation:
-            resolvable = self.__checkLettersInOperator(ecuation.split("/"), matrixes, True)
-        if not resolvable:
-            return resolvable, "not possible /(Div matrix or Div 0)"
-        #Caso con mult escalar
-        if "*" in ecuation:
-            resolvable = self.__checkLettersInOperator(ecuation.split("*"), matrixes, False)
-        if not resolvable:
-            return resolvable, "not possible *Mult scalar to matrix"
-        #Caso mult vectorial
-        if "x" in ecuation:
-            resolvable = self.__checkLettersInOperator(ecuation.split("x"), numbers, False)
-        if not resolvable:
-            return resolvable, "not possible xMult vect to num"
-        #Revisar si el número de archivos es menor al de matrices en la ecuación
-        countEcuationMatrixes = 0
-        for letter in matrixes:
-            if letter in self.__ecuation:
-                countEcuationMatrixes += 1
-        if countEcuationMatrixes < self.__numberOfArchives:
-            resolvable = False
-            return resolvable, "not enough arch"
 
         return resolvable, "is possible"
     
+    def __orderScalarMult(self, ecuation):
+        band = True
+        ecuationContainer = ""
+        for i in range(len(ecuation.split("*"))-1):
+            band = False
+            side = self.__whichSideMatrix(ecuation.split("*")[i], ecuation.split("*")[i+1])
+            if side=="L":
+                withoutLast = self.__removeLastOrFisrt(ecuation.split("*")[i], False)
+                ecuationContainer = ecuationContainer+withoutLast+"A"
+            elif side=="R":
+                withoutFirst = self.__removeLastOrFisrt(ecuation.split("*")[i], True)
+                ecuationContainer = ecuationContainer+withoutFirst+"A"
+        if band:
+            side = self.__whichSideMatrix(ecuation.split("*")[0], ecuation.split("*")[1])
+            withoutLast = self.__removeLastOrFisrt(ecuation.split("*")[0], True)
+            withoutFirst = self.__removeLastOrFisrt(ecuation.split("*")[1], False)
+
+            ecuationContainer = withoutLast+"A"+withoutFirst
+        return ecuationContainer
+    
+    def __whichSideMatrix(self, firstValue, secondValue):
+        matrixes = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"            
+        isBeforeOperatorLetter = firstValue in matrixes
+        isAfterOperatorLetter = secondValue in matrixes
+        if isBeforeOperatorLetter and not isAfterOperatorLetter: 
+            return "L"
+        elif not isBeforeOperatorLetter and isAfterOperatorLetter:
+            return "R"
+    
+    def __removeLastOrFisrt(self, string, last):
+        newStr = ""
+        if last:
+            for i in range(len(string)-1):
+                newStr = newStr+string[i]
+            return newStr
+        else:
+            for i in range(len(string)-1):
+                newStr = newStr+string[i+1]
+        return newStr
+
     def __checkSpecialChars(self, ecuation):
-        specialChars = "|°¬!#$%&?¡'¿´;:_¨* "
+        specialChars = "|°¬!#$%&?¡¿´;:_¨ "
         for i in ecuation:
-            if i.lower() in specialChars:
+            if i in specialChars:
                 return False
         return True
 
     def getEcuation(self):
         return self.__ecuation
-    
-    def getNumberOfArchives(self):
-        return self.__numberOfArchives
     
     def getResolvable(self):
         return self.__resolvable
