@@ -138,7 +138,7 @@ def readNumbersData(binArchives):
     if binArchives.any == None:
         Logger.storeArchiveLog("Object-Error: Arreglo es nulo")
         exit()
-    errorPerArchive = emptyVector((len(binArchives), 0))     
+    errorPerArchive = emptyVector(len(binArchives), 0)     
     arFinal = emptyMatrix(len(binArchives), len(binArchives[0], numpy.nan))               
     
     for i in range(len(binArchives)):
