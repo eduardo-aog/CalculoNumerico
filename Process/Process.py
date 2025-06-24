@@ -53,9 +53,9 @@ def convertToDecimal(arFinal):
                 else:
                     arFinal[i][j] = 0
             except ValueError as e:
-                Logger.storeArchiveLog(f"{e.__class__.__name__}/{arFinal[i][j]}/{e}")
+                Logger.storeArchiveLog(f"{e.__class__.__name__}/{arFinal[i][j]}/{e}", f"{e.__class__.__name__}/{arFinal[i][j]}/{e}")
             except Exception as e:
-                Logger.storeArchiveLog(f"{e.__class__.__name__}/{arFinal[i][j]}/{e}")   
+                Logger.storeArchiveLog(f"{e.__class__.__name__}/{arFinal[i][j]}/{e}", f"{e.__class__.__name__}/{arFinal[i][j]}/{e}")   
 
 def checkEcuations(arFinal:numpy.array, arEcuation:numpy.array):
     i = 0
@@ -63,14 +63,14 @@ def checkEcuations(arFinal:numpy.array, arEcuation:numpy.array):
     results = numpy.empty((len(arEcuation[0]), 1), dtype=object)
     for ecuation in arEcuation:
         try:
-            currentEcuation = CheckEcuationResolvable(ecuation, len(arFinal))
+            currentEcuation = CheckEcuationResolvable(ecuation)
             if currentEcuation.getResolvable():
                 results[i] = ecuation
             else:
-                Logger.storeArchiveLog(f"{currentEcuation.getCientificNotation()}/{ecuation}")
+                Logger.storeArchiveLog(f"{currentEcuation.getCientificNotation()}/{ecuation}",f"{currentEcuation.getCientificNotation()}/{ecuation}")
             i += 1
         except ValueError as e:
-            Logger.storeArchiveLog(f"{e.__class__.__name__}/{ecuation}/{e}")
+            Logger.storeArchiveLog(f"{e.__class__.__name__}/{ecuation}/{e}",f"{e.__class__.__name__}/{ecuation}/{e}")
     results = __gaussJordanSeidel(results)
     return results
 
@@ -88,12 +88,16 @@ def getInputJordanSeidel(text):
 def __gaussJordanSeidel(results:numpy.array):
     optionJordan = getInputJordanSeidel("Realizar operación con Gauss Jordan(0) o Seidel(1): ")
     for i in range(len(results)):
+        continue
         matrixB = emptyVector(len(results[i]), 1)
-        if optionJordan==0:
-            amplifiedMatrix = GaussJordan.pivoteafila(results[i], matrixB)
-            amplifiedMatrix = GaussJordan.gauss_eliminaAdelante(amplifiedMatrix)
-            results[i] = GaussJordan.gauss_eliminaAtras(amplifiedMatrix)
-        else:
-            amplifiedMatrix = GaussSeidel.pivoteaFila(results[i], matrixB)
-            results[i] = GaussSeidel.gaussSeidel(results[i], matrixB, amplifiedMatrix)
+        try:
+            if optionJordan==0:
+                amplifiedMatrix = GaussJordan.pivoteafila(results[i], matrixB)
+                amplifiedMatrix = GaussJordan.gauss_eliminaAdelante(amplifiedMatrix)
+                results[i] = GaussJordan.gauss_eliminaAtras(amplifiedMatrix)
+            else:
+                amplifiedMatrix = GaussSeidel.pivoteaFila(results[i], matrixB)
+                results[i] = GaussSeidel.gaussSeidel(results[i], matrixB, amplifiedMatrix)
+        except ValueError as e:
+            Logger.storeArchiveLog(f"{e.__class__.__name__}/{results[i]}/{e}",f"{e.__class__.__name__}/{results[i]}/{e}")
     return results

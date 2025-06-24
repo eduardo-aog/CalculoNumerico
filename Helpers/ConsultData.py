@@ -131,7 +131,7 @@ def processSpecialBinFiles(archiveUtil):
     for i, (file, content) in enumerate(specialFiles.items()):
         matriz[i] = content
     
-    return numpy.array(matriz, specialFiles.keys())
+    return matriz, "testEcuations_serial6.bin"
 
 
 def readNumbersData(binArchives):
@@ -139,7 +139,7 @@ def readNumbersData(binArchives):
         Logger.storeArchiveLog("Object-Error: Arreglo es nulo")
         exit()
     errorPerArchive = emptyVector(len(binArchives), 0)     
-    arFinal = emptyMatrix(len(binArchives), len(binArchives[0], numpy.nan))               
+    arFinal = emptyMatrix(len(binArchives), len(binArchives[0]), numpy.nan)               
     
     for i in range(len(binArchives)):
         for j in range(len(binArchives[i])):
@@ -149,10 +149,10 @@ def readNumbersData(binArchives):
                 else:
                     errorPerArchive[i] += 1
             except ValueError as e:
-                Logger.storeArchiveLog(f"{e.__class__.__name__}/{binArchives[i][j]}/{e}")
+                Logger.storeArchiveLog(f"{e.__class__.__name__}/{binArchives[i][j]}/{e}", f"{e.__class__.__name__}/{binArchives[i][j]}/{e}")
                 errorPerArchive[i] += 1
             except Exception as e:
-                Logger.storeArchiveLog(f"{e.__class__.__name__}/{binArchives[i][j]}/{e}")
+                Logger.storeArchiveLog(f"{e.__class__.__name__}/{binArchives[i][j]}/{e}", f"{e.__class__.__name__}/{binArchives[i][j]}/{e}")
                 errorPerArchive[i] += 1
 
     return arFinal, errorPerArchive

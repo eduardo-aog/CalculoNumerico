@@ -16,7 +16,7 @@ def storeDataNumbers(archive, arFinal, errorPerArchive, archivesNames):
                 continue
 
 def storeDataEcuations(archive, arEcuation, archivesNames):
-    if archive == None or arEcuation.any == None or archivesNames.any == None:
+    if archive == None or arEcuation.any == None or archivesNames == None:
         Logger.storeArchiveLog("Object-Error: Un objeto es nulo")
         exit()
     
