@@ -3,7 +3,7 @@ from Repositories.NumBases import NumBases
 from Repositories.ElementalOperations import ElementalOperations
 from Repositories.SignificantDigits import SignificantDigits
 from Repositories.CheckEcuationResolvable import CheckEcuationResolvable
-from Repositories.MatrixOperations import MatrixOperations
+from Repositories.SolveEcuation import SolveEcuation
 from Repositories.GaussJordan import GaussJordan
 from Repositories.GaussSeidel import GaussSeidel
 from Repositories.Logger import Logger
@@ -65,7 +65,8 @@ def checkEcuations(arFinal:numpy.array, arEcuation:numpy.array):
         try:
             currentEcuation = CheckEcuationResolvable(ecuation)
             if currentEcuation.getResolvable():
-                results[i] = ecuation
+                solved = SolveEcuation(ecuation, arFinal)
+                results[i] = solved.getResult()
             else:
                 Logger.storeArchiveLog(f"{currentEcuation.getCientificNotation()}/{ecuation}",f"{currentEcuation.getCientificNotation()}/{ecuation}")
             i += 1
